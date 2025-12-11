@@ -10,6 +10,7 @@
 !/app
 !/server
 !/public
+!/i18n
 
 # Exclude from app/
 app/node_modules
