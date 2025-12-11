@@ -9,15 +9,18 @@ extend-ignore-re = [
 ]
 
 [default.extend-words]
-# Add custom words that are not typos
+# Technical words that are not typos
 nuxt = "nuxt"
 composables = "composables"
 pnpm = "pnpm"
 nuxtui = "nuxtui"
 unovis = "unovis"
+nitro = "nitro"
+vite = "vite"
 
 [files]
 extend-exclude = [
+  # Dependencies and build
   "*.log",
   "pnpm-lock.yaml",
   "package-lock.json",
@@ -26,5 +29,10 @@ extend-exclude = [
   ".output/",
   "coverage/",
   "dist/",
+  # Content files (may contain Spanish)
+  "**/*.vue",
+  "**/*.md",
+  "**/*.json",
+  "**/locales/**",
 ]
 

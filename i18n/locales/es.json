@@ -1,0 +1,49 @@
+{
+  "common": {
+    "welcome": "Bienvenido",
+    "home": "Inicio",
+    "settings": "Configuración",
+    "customers": "Clientes",
+    "inbox": "Bandeja de entrada",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "search": "Buscar",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "update": "Actualizar"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña"
+  },
+  "dashboard": {
+    "title": "Panel de control",
+    "overview": "Resumen",
+    "stats": "Estadísticas",
+    "recentActivity": "Actividad reciente"
+  },
+  "security": {
+    "password": {
+      "title": "Contraseña",
+      "description": "Confirma tu contraseña actual antes de establecer una nueva.",
+      "current": "Contraseña actual",
+      "new": "Nueva contraseña",
+      "minLength": "Debe tener al menos 8 caracteres",
+      "mustBeDifferent": "Las contraseñas deben ser diferentes"
+    },
+    "account": {
+      "title": "Cuenta",
+      "description": "¿Ya no quieres usar nuestro servicio? Puedes eliminar tu cuenta aquí. Esta acción no es reversible. Toda la información relacionada con esta cuenta será eliminada permanentemente.",
+      "deleteAccount": "Eliminar cuenta"
+    },
+    "language": {
+      "title": "Idioma",
+      "description": "Selecciona el idioma de la aplicación."
+    }
+  }
+}

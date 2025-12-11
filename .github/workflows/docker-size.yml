@@ -72,11 +72,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set env vars 📝
-        run: |
-          echo "BASE_DOCKER_IMAGE_SIZE=${{ needs.calculate-base.outputs.image_size }}" >> "$GITHUB_ENV"
-          echo "HEAD_DOCKER_IMAGE_SIZE=${{ needs.calculate-head.outputs.image_size }}" >> "$GITHUB_ENV"
-
       - name: Comment PR 💬
         uses: marocchino/sticky-pull-request-comment@v2
         with:
@@ -86,8 +81,8 @@ jobs:
 
             | Metric | Value |
             |--------|-------|
-            | Base branch | **${{ env.BASE_DOCKER_IMAGE_SIZE }}** |
-            | This PR | **${{ env.HEAD_DOCKER_IMAGE_SIZE }}** |
+            | Base branch | **${{ needs.calculate-base.outputs.image_size }}** |
+            | This PR | **${{ needs.calculate-head.outputs.image_size }}** |
 
             > 💡 Smaller is better! Consider optimizing if the image size increased significantly.
 
