@@ -29,6 +29,7 @@ RUN pnpm run build && \
 
 FROM base AS production
 
+ARG PORT=3000
 ENV NODE_ENV=production
 ENV USER=node
 
@@ -39,6 +40,6 @@ COPY --from=build $DIR/node_modules node_modules
 COPY --from=build $DIR/.output .output
 
 USER $USER
-EXPOSE 3000
+EXPOSE $PORT
 CMD ["dumb-init", "node", ".output/server/index.mjs"]
 
