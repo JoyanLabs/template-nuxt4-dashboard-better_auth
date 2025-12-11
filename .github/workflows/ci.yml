@@ -27,7 +27,7 @@ jobs:
         run: pnpm build
 
       - name: Verify build output ✅
-        run: find .output/server/index.mjs
+        run: 'test -f .output/server/index.mjs || (echo "Error: Build output not found" && exit 1)'
 
       - name: Lint code 💅
         run: pnpm run lint

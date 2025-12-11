@@ -39,6 +39,6 @@ COPY --from=build $DIR/node_modules node_modules
 COPY --from=build $DIR/.output .output
 
 USER $USER
-EXPOSE $PORT
+EXPOSE 3000
 CMD ["dumb-init", "node", ".output/server/index.mjs"]
 
