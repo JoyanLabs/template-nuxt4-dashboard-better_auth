@@ -1,0 +1,86 @@
+name: 🐳 Docker Size
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  calculate-base:
+    name: Calculate Base Image Size
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      image_size: ${{ steps.calculate.outputs.image_size }}
+
+    steps:
+      - name: Checkout base 🛬
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.base_ref }}
+
+      - name: Get commit hash 🔑
+        id: commit
+        run: echo "short=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache docker image 💾
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: /tmp/docker-image.tar
+          key: base-docker-image-os-${{ runner.os }}-commit-${{ steps.commit.outputs.short }}
+
+      - name: Build and calculate docker image size 📊
+        id: calculate
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          docker build . -t spp-frontend --target production
+          image_size=$(docker images spp-frontend | awk 'NR==2 {print $NF}')
+          echo "image_size=$image_size" >> "$GITHUB_OUTPUT"
+          docker save spp-frontend -o /tmp/docker-image.tar
+
+  calculate-head:
+    name: Calculate PR Image Size
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      image_size: ${{ steps.calculate.outputs.image_size }}
+
+    steps:
+      - name: Checkout PR 🛬
+        uses: actions/checkout@v6
+
+      - name: Build and calculate docker image size 📊
+        id: calculate
+        run: |
+          docker build . -t spp-frontend --target production
+          image_size=$(docker images spp-frontend | awk 'NR==2 {print $NF}')
+          echo "image_size=$image_size" >> "$GITHUB_OUTPUT"
+
+  write-comment:
+    name: Comment on PR
+    needs: [calculate-base, calculate-head]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set env vars 📝
+        run: |
+          echo "BASE_DOCKER_IMAGE_SIZE=${{ needs.calculate-base.outputs.image_size }}" >> "$GITHUB_ENV"
+          echo "HEAD_DOCKER_IMAGE_SIZE=${{ needs.calculate-head.outputs.image_size }}" >> "$GITHUB_ENV"
+
+      - name: Comment PR 💬
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: docker-metrics
+          message: |
+            ## 🐳 Docker Metrics 🐳
+
+            | Metric | Value |
+            |--------|-------|
+            | Base branch | **${{ env.BASE_DOCKER_IMAGE_SIZE }}** |
+            | This PR | **${{ env.HEAD_DOCKER_IMAGE_SIZE }}** |
+
+            > 💡 Smaller is better! Consider optimizing if the image size increased significantly.
+

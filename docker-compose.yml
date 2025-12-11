@@ -1,0 +1,22 @@
+services:
+  spp-frontend-production:
+    container_name: spp-frontend-production
+    build:
+      target: production
+      context: .
+      args:
+        - PORT=${PORT:-3000}
+    ports:
+      - '${PORT:-3000}:${PORT:-3000}'
+    environment:
+      - NITRO_HOST=0.0.0.0
+      - NITRO_PORT=${PORT:-3000}
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: '512m'
+        reservations:
+          cpus: '0.25'
+          memory: '256m'
+

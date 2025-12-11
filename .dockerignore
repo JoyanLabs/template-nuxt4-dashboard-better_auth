@@ -1,0 +1,59 @@
+# Deny all by default
+*
+
+# Allow specific files and directories
+!/package.json
+!/pnpm-lock.yaml
+!/nuxt.config.ts
+!/tsconfig.json
+!/eslint.config.mjs
+!/app
+!/server
+!/public
+
+# Exclude from app/
+app/node_modules
+app/.nuxt
+app/.output
+
+# Build artifacts
+.nuxt
+.output
+dist
+coverage
+node_modules
+
+# Development files
+.git
+.github
+.vscode
+.idea
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Tests
+tests
+*.test.ts
+*.spec.ts
+
+# Documentation
+README.md
+docs
+
+# Logs
+*.log
+logs
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# CI/CD
+.github
+
+# Husky
+.husky
+

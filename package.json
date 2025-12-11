@@ -7,8 +7,11 @@
     "dev": "nuxt dev",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "prepare": "[ -f .husky/install.mjs ] && node .husky/install.mjs || true",
     "lint": "eslint .",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "docker:build": "docker build -t spp-frontend:latest --target production .",
+    "docker:prod": "docker compose up"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.75",
@@ -24,11 +27,16 @@
     "@vueuse/nuxt": "^13.9.0",
     "date-fns": "^4.1.0",
     "nuxt": "^4.2.2",
+    "tailwindcss": "^4.1.18",
     "zod": "^4.1.13"
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
     "@nuxt/eslint": "^1.10.0",
     "eslint": "^9.39.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "typescript": "^5.9.3",
     "vue-tsc": "^3.1.5"
   },

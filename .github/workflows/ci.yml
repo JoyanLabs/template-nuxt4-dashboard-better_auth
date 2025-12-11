@@ -1,34 +1,36 @@
-name: ci
+name: 🚀 CI
 
-on: push
+on:
+  push:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   ci:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node: [22]
+    name: Build, Lint & Typecheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
-      - name: Checkout
+      - name: Checkout 🛬
         uses: actions/checkout@v6
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+      - name: Setup Node ⚙️
+        uses: ./.github/actions/setup-node
 
-      - name: Install node
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ matrix.node }}
-          cache: pnpm
+      - name: Build Nuxt app 📦
+        run: pnpm build
 
-      - name: Install dependencies
-        run: pnpm install
+      - name: Verify build output ✅
+        run: find .output/server/index.mjs
 
-      - name: Lint
+      - name: Lint code 💅
         run: pnpm run lint
 
-      - name: Typecheck
+      - name: Typecheck 🔍
         run: pnpm run typecheck
