@@ -1,64 +1,179 @@
-# Nuxt Dashboard Template
+<p align="center">
+  <a href="https://nuxt.com/" target="blank"><img src="https://nuxt.com/assets/design-kit/logo-green-black.svg" alt="Nuxt Logo" width="280" /></a>
+</p>
 
-[![Nuxt UI](https://img.shields.io/badge/Made%20with-Nuxt%20UI-00DC82?logo=nuxt&labelColor=020420)](https://ui.nuxt.com)
+<h1 align="center">🚀 Nuxt Dashboard Template | Joyan Labs</h1>
 
-Get started with the Nuxt dashboard template with multiple pages, collapsible sidebar, keyboard shortcuts, light & dark more, command palette and more, powered by [Nuxt UI](https://ui.nuxt.com).
+<p align="center">
+  A high-performance, production-ready Nuxt 4 dashboard template with Nuxt UI, Tailwind CSS 4, and Docker.
+</p>
 
-- [Live demo](https://dashboard-template.nuxt.dev/)
-- [Documentation](https://ui.nuxt.com/docs/getting-started/installation/nuxt)
+<p align="center">
+  <a href="https://nodejs.org/docs/latest-v22.x/api/index.html"><img src="https://img.shields.io/badge/node-22.x-green.svg" alt="node"/></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/typescript-5.x-blue.svg" alt="typescript"/></a>
+  <a href="https://pnpm.io/"><img src="https://img.shields.io/badge/pnpm-10.x-orange.svg" alt="pnpm"/></a>
+  <a href="https://nuxt.com/"><img src="https://img.shields.io/badge/Nuxt-4.x-00DC82.svg" alt="nuxt"/></a>
+  <a href="https://ui.nuxt.com/"><img src="https://img.shields.io/badge/Nuxt_UI-4.x-00DC82.svg" alt="nuxt-ui"/></a>
+  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS-4.x-38BDF8.svg" alt="tailwind"/></a>
+  <a href="https://www.docker.com/"><img src="https://img.shields.io/badge/Dockerized_🐳-blue.svg" alt="docker"/></a>
+</p>
 
-<a href="https://dashboard-template.nuxt.dev/" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://ui.nuxt.com/assets/templates/nuxt/dashboard-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://ui.nuxt.com/assets/templates/nuxt/dashboard-light.png">
-    <img alt="Nuxt Dashboard Template" src="https://ui.nuxt.com/assets/templates/nuxt/dashboard-light.png">
-  </picture>
-</a>
+---
 
-> The dashboard template for Vue is on https://github.com/nuxt-ui-templates/dashboard-vue.
+## 🎯 About The Project
 
-## Quick Start
+This template provides a solid foundation for building modern, scalable dashboard applications using Nuxt 4. It incorporates best practices, modern tooling, and a fully dockerized environment.
 
-```bash [Terminal]
-npm create nuxt@latest -- -t github:nuxt-ui-templates/dashboard
+### Key Features
+
+- ⚡️ **Nuxt 4**: Latest version with improved performance and DX.
+- 🎨 **Nuxt UI 4**: Beautiful, accessible components out of the box.
+- 🌊 **Tailwind CSS 4**: Next-gen utility-first CSS framework.
+- 🐳 **Dockerized**: Ready for development and production.
+- 🧪 **Testing**: Nuxt Test Utils integration.
+- 🐶 **Husky**: Git hooks for code quality.
+- 📦 **pnpm**: Efficient package manager.
+- 🔍 **ESLint**: Code linting with Nuxt ESLint module.
+
+---
+
+## 🌟 What's Included?
+
+1. **🐳 Fully Dockerized**: Optimized multi-stage Dockerfile for production.
+2. **🎨 Nuxt UI Components**: Pre-built dashboard layout, sidebar, modals, tables, and more.
+3. **🌙 Dark Mode**: Light & dark theme support built-in.
+4. **⌨️ Keyboard Shortcuts**: Navigation and actions via keyboard.
+5. **🐶 Husky Integration**:
+   - Linting on commit
+   - Conventional commits
+   - Type checking
+   - Spell checking
+6. **📱 Responsive Design**: Mobile-first, works on all devices.
+7. **🚀 CI/CD**: GitHub Actions workflows included.
+8. **🔄 Renovate**: Automated dependency updates.
+
+---
+
+## 🧑‍💻 Development
+
+### Initial Setup
+
+Install `pnpm` globally (if not installed):
+
+```bash
+npm install -g pnpm@10.23.0
 ```
 
-## Deploy your own
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-name=dashboard&repository-url=https%3A%2F%2Fgithub.com%2Fnuxt-ui-templates%2Fdashboard&demo-image=https%3A%2F%2Fui.nuxt.com%2Fassets%2Ftemplates%2Fnuxt%2Fdashboard-dark.png&demo-url=https%3A%2F%2Fdashboard-template.nuxt.dev%2F&demo-title=Nuxt%20Dashboard%20Template&demo-description=A%20dashboard%20template%20with%20multi-column%20layout%20for%20building%20sophisticated%20admin%20interfaces.)
-
-## Setup
-
-Make sure to install the dependencies:
+Install dependencies:
 
 ```bash
 pnpm install
 ```
 
-## Development Server
+### Development Mode
 
-Start the development server on `http://localhost:3000`:
+Start the application in **development mode** with hot-reload:
 
 ```bash
 pnpm dev
 ```
 
-## Production
+The app will be available at `http://localhost:3000`.
 
-Build the application for production:
+### Production Mode (Docker)
 
-```bash
-pnpm build
-```
-
-Locally preview production build:
+Build the Docker image:
 
 ```bash
-pnpm preview
+pnpm run docker:build
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Run the production container:
 
-## Renovate integration
+```bash
+pnpm run docker:prod
+```
 
-Install [Renovate GitHub app](https://github.com/apps/renovate/installations/select_target) on your repository and you are good to go.
+Or using docker-compose:
+
+```bash
+docker-compose up -d
+```
+
+---
+
+## ⚙️ Build
+
+Build for production:
+
+```bash
+pnpm run build
+```
+
+Preview production build locally:
+
+```bash
+pnpm run preview
+```
+
+---
+
+## ✅ Testing
+
+### Type Check
+
+```bash
+pnpm run typecheck
+```
+
+---
+
+## 💅 Linting
+
+### Check Code
+
+```bash
+pnpm run lint
+```
+
+### Fix Issues (auto-fix)
+
+```bash
+pnpm run lint --fix
+```
+
+---
+
+## 📁 Project Structure
+
+```
+├── app/
+│   ├── assets/css/       # Global styles
+│   ├── components/       # Vue components
+│   ├── composables/      # Vue composables
+│   ├── layouts/          # Page layouts
+│   ├── pages/            # File-based routing
+│   ├── types/            # TypeScript types
+│   └── utils/            # Utility functions
+├── server/
+│   └── api/              # API routes
+├── public/               # Static assets
+├── Dockerfile            # Production Docker config
+├── docker-compose.yml    # Docker Compose config
+└── nuxt.config.ts        # Nuxt configuration
+```
+
+---
+
+## 🐳 Docker Commands
+
+| Command | Description |
+|---------|-------------|
+| `pnpm run docker:build` | Build production Docker image |
+| `pnpm run docker:prod` | Run production container |
+
+---
+
+## 📝 License
+
+Developed with ❤️ by **Joyan Labs**
