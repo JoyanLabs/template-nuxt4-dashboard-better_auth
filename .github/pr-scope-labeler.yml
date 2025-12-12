@@ -1,0 +1,86 @@
+💻 Components:
+  - changed-files:
+      - any-glob-to-any-file:
+          - app/components/**
+
+🎨 Layouts:
+  - changed-files:
+      - any-glob-to-any-file:
+          - app/layouts/**
+
+📄 Pages:
+  - changed-files:
+      - any-glob-to-any-file:
+          - app/pages/**
+
+🔧 Composables:
+  - changed-files:
+      - any-glob-to-any-file:
+          - app/composables/**
+
+🖼️ Assets:
+  - changed-files:
+      - any-glob-to-any-file:
+          - app/assets/**
+          - public/**
+
+🌐 Server:
+  - changed-files:
+      - any-glob-to-any-file:
+          - server/**
+
+🌍 i18n:
+  - changed-files:
+      - any-glob-to-any-file:
+          - i18n/**
+
+📝 Documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - README.md
+          - docs/**
+
+🐳 Build:
+  - changed-files:
+      - any-glob-to-any-file:
+          - .dockerignore
+          - Dockerfile
+          - docker-compose.yml
+          - nuxt.config.ts
+          - tsconfig.json
+
+⚙️ Configuration:
+  - changed-files:
+      - any-glob-to-any-file:
+          - .dockerignore
+          - .editorconfig
+          - .gitignore
+          - .npmrc
+          - lint-staged.config.mjs
+          - eslint.config.mjs
+          - nuxt.config.ts
+          - tsconfig.json
+          - _typos.toml
+          - renovate.json
+
+📦 Dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - package.json
+          - pnpm-lock.yaml
+
+🚀 CI/CD:
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/workflows/**
+          - .github/pr-scope-labeler.yml
+          - .husky/**
+
+🏠 Github Configuration:
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/ISSUE_TEMPLATE/**
+          - .github/CODEOWNERS
+          - .github/labels.yml
+          - .github/PULL_REQUEST_TEMPLATE.md
+
