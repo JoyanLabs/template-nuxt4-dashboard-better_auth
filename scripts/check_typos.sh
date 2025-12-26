@@ -52,3 +52,5 @@ filtered_files=$(filter_files "$absolute_path_files")
 relative_files=$(convert_to_relative_paths "$filtered_files")
 typos $relative_files
 
+
+

@@ -16,3 +16,5 @@ jobs:
           configuration-path: .github/pr-scope-labeler.yml
           sync-labels: true
 
+
+
