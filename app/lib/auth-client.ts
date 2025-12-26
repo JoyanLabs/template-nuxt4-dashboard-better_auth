@@ -10,7 +10,7 @@ import { createAuthClient } from 'better-auth/vue'
  */
 export const authClient = createAuthClient({
   // URL del frontend - el proxy de Nuxt se encarga de reenviar a localhost:3001
-  baseURL: import.meta.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:4000',
+  baseURL: import.meta.env.NUXT_PUBLIC_SITE_URL || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'),
   fetchOptions: {
     credentials: 'include'
   }

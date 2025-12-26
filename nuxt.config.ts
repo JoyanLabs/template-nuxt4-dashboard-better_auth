@@ -39,7 +39,7 @@ export default defineNuxtConfig({
     // Proxy para la API del backend (auth, etc.)
     // Específicamente excluir _nuxt_icon del proxy
     '/api/auth/**': {
-      proxy: 'http://localhost:3001/api/auth/**'
+      proxy: `${env.NUXT_PUBLIC_API_BASE_URL}/api/auth/**`
     }
   },
   compatibilityDate: '2025-12-11',
