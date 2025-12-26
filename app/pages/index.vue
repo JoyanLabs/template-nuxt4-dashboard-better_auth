@@ -3,7 +3,13 @@ import { sub } from 'date-fns'
 import type { DropdownMenuItem } from '@nuxt/ui'
 import type { Period, Range } from '~/types'
 
+// Proteger la página con el middleware de autenticación
+definePageMeta({
+  middleware: 'auth'
+})
+
 const { isNotificationsSlideoverOpen } = useDashboard()
+const { user, signOut } = useAuth()
 
 const items = [[{
   label: 'New mail',
@@ -13,6 +19,13 @@ const items = [[{
   label: 'New customer',
   icon: 'i-lucide-user-plus',
   to: '/customers'
+}, {
+  label: 'Cerrar sesión',
+  icon: 'i-lucide-log-out',
+  click: async () => {
+    await signOut()
+    await navigateTo('/login')
+  }
 }]] satisfies DropdownMenuItem[][]
 
 const range = shallowRef<Range>({
@@ -31,6 +44,12 @@ const period = ref<Period>('daily')
         </template>
 
         <template #right>
+          <!-- Mostrar usuario autenticado -->
+          <div v-if="user" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <UIcon name="i-lucide-user-circle" class="size-5" />
+            <span>{{ user.name || user.email }}</span>
+          </div>
+
           <UTooltip text="Notifications" :shortcuts="['N']">
             <UButton
               color="neutral"

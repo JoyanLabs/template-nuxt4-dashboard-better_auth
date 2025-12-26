@@ -1,5 +1,11 @@
+import { validateEnv } from './shared/config/env.schema'
+
+// Validar variables de entorno
+const env = validateEnv(process.env)
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+
   modules: [
     '@nuxt/eslint',
     '@nuxt/ui',
@@ -7,6 +13,7 @@ export default defineNuxtConfig({
     '@nuxt/hints',
     '@nuxt/image',
     '@nuxt/scripts',
+    '@nuxt/test-utils',
     '@nuxt/test-utils',
     '@nuxtjs/i18n'
   ],
@@ -21,12 +28,20 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
-  routeRules: {
-    '/api/**': {
-      cors: true
+  runtimeConfig: {
+    public: {
+      siteUrl: env.NUXT_PUBLIC_SITE_URL,
+      apiBaseUrl: env.NUXT_PUBLIC_API_BASE_URL
     }
   },
 
+  routeRules: {
+    // Proxy para la API del backend (auth, etc.)
+    // Específicamente excluir _nuxt_icon del proxy
+    '/api/auth/**': {
+      proxy: 'http://localhost:3001/api/auth/**'
+    }
+  },
   compatibilityDate: '2025-12-11',
 
   eslint: {
@@ -46,5 +61,14 @@ export default defineNuxtConfig({
     defaultLocale: 'es',
     langDir: 'locales',
     strategy: 'no_prefix'
+  },
+
+  icon: {
+    // Usar serverBundle 'remote' para cargar iconos desde CDN (jsDelivr)
+    serverBundle: 'remote',
+    // Escanear componentes para incluir iconos usados en el bundle del cliente
+    clientBundle: {
+      scan: true
+    }
   }
 })

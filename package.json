@@ -14,7 +14,6 @@
     "docker:prod": "docker compose up"
   },
   "dependencies": {
-    "@iconify-json/lucide": "^1.2.75",
     "@iconify-json/simple-icons": "^1.2.60",
     "@nuxt/hints": "1.0.0-alpha.3",
     "@nuxt/image": "2.0.0",
@@ -26,6 +25,7 @@
     "@unovis/ts": "^1.6.2",
     "@unovis/vue": "^1.6.2",
     "@vueuse/nuxt": "^13.9.0",
+    "better-auth": "^1.4.6",
     "date-fns": "^4.1.0",
     "nuxt": "^4.2.2",
     "tailwindcss": "^4.1.18",
@@ -34,7 +34,9 @@
   "devDependencies": {
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
+    "@iconify-json/lucide": "^1.2.75",
     "@nuxt/eslint": "^1.10.0",
+    "baseline-browser-mapping": "^2.9.11",
     "eslint": "^9.39.1",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
