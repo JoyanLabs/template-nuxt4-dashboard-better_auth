@@ -1,3 +1,4 @@
+import { useAuthFetch } from '~/composables/useAuthFetch'
 import { authClient } from '~/lib/auth-client'
 
 interface User {
@@ -8,11 +9,36 @@ interface User {
 }
 
 /**
- * Composable de autenticación
+ * Composable de autenticación para páginas con SSR
+ * Usa useSession con useAuthFetch para mantener la sesión en hard refreshes
+ *
+ * IMPORTANTE: useAuthFetch convierte URLs absolutas a relativas para SSR
+ */
+export async function useAuthSSR() {
+  const { data: sessionData } = await authClient.useSession(useAuthFetch)
+  const user = computed(() => sessionData.value?.user)
+  const session = computed(() => sessionData.value?.session)
+  const isLoading = computed(() => !sessionData.value)
+  const error = computed(() => null) // useSession maneja errores internamente
+
+  return {
+    user,
+    session,
+    isLoading,
+    error
+  }
+}
+
+/**
+ * Composable de autenticación para componentes
  * Proporciona acceso a las funciones de autenticación de Better Auth
- * y gestiona el estado del usuario usando el cliente oficial
+ *
+ * ⚠️  ADVERTENCIA: Este composable NO funciona correctamente en páginas con SSR
+ * Para páginas con SSR, usa useAuthSSR() en su lugar
  */
 export function useAuth() {
+  // ⚠️  ADVERTENCIA: No uses este composable en páginas con SSR
+  // Puede causar problemas de hidratación y pérdida de sesión
   const sessionResponse = authClient.useSession()
 
   const user = computed(() => sessionResponse.value.data?.user as User | null)

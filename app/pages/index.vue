@@ -2,14 +2,36 @@
 import { sub } from 'date-fns'
 import type { DropdownMenuItem } from '@nuxt/ui'
 import type { Period, Range } from '~/types'
+import { authClient } from '~/lib/auth-client'
 
-// Proteger la página con el middleware de autenticación
-definePageMeta({
-  middleware: 'auth'
-})
+// La página está protegida por el middleware global de autenticación
+definePageMeta({})
 
 const { isNotificationsSlideoverOpen } = useDashboard()
-const { user, signOut } = useAuth()
+// ✅ CORRECTO: Usar composable específico para SSR
+const { user } = await useAuthSSR()
+
+/**
+ * Handler de cierre de sesión
+ * Usa authClient directamente para evitar problemas con useAuth() en SSR
+ */
+const handleSignOut = async () => {
+  try {
+    console.log('🔓 [SIGNOUT] Iniciando cierre de sesión...')
+
+    // Llamar directamente a authClient en lugar de useAuth()
+    await authClient.signOut()
+
+    console.log('✅ [SIGNOUT] Sesión cerrada exitosamente')
+
+    // Redirigir al login
+    await navigateTo('/login')
+  } catch (error) {
+    console.error('❌ [SIGNOUT] Error al cerrar sesión:', error)
+    // Incluso si hay error, intentar redirigir al login
+    await navigateTo('/login')
+  }
+}
 
 const items = [[{
   label: 'New mail',
@@ -22,10 +44,7 @@ const items = [[{
 }, {
   label: 'Cerrar sesión',
   icon: 'i-lucide-log-out',
-  click: async () => {
-    await signOut()
-    await navigateTo('/login')
-  }
+  onSelect: handleSignOut // ✅ Correcto: onSelect en lugar de click
 }]] satisfies DropdownMenuItem[][]
 
 const range = shallowRef<Range>({

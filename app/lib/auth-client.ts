@@ -1,18 +1,32 @@
 import { createAuthClient } from 'better-auth/vue'
 
 /**
- * Cliente de Better Auth para el frontend
- * Usa el proxy de Nuxt (/api/auth) para evitar problemas de cross-origin cookies
- * El proxy está configurado en nuxt.config.ts -> routeRules
+ * Cliente de autenticación de Better Auth
  *
- * IMPORTANTE: Better Auth requiere una URL completa, no paths relativos
- * Usamos la URL del frontend (4000) para que las cookies queden en el mismo dominio
+ * IMPORTANTE: Usa la URL del FRONTEND para que el proxy de Nuxt funcione.
+ * El proxy en nuxt.config.ts reenvía /api/auth/** al backend.
+ * Esto garantiza que las cookies HTTP-only se establezcan en el dominio correcto.
+ *
+ * Configuración dinámica:
+ * - En desarrollo: http://localhost:4005 (de NUXT_PUBLIC_SITE_URL)
+ * - En producción: tu dominio (ej: https://tuapp.com)
  */
+
+// Obtener baseURL de variables de entorno, con fallback para desarrollo
+const getBaseURL = () => {
+  // En cliente, usar window.location.origin directamente
+  if (import.meta.client && typeof window !== 'undefined') {
+    return window.location.origin
+  }
+
+  // En servidor, usar variable de entorno o fallback
+  return process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:4005'
+}
+
 export const authClient = createAuthClient({
-  // URL del frontend - el proxy de Nuxt se encarga de reenviar a localhost:3001
-  baseURL: import.meta.env.NUXT_PUBLIC_SITE_URL || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'),
+  baseURL: getBaseURL(),
   fetchOptions: {
-    credentials: 'include'
+    credentials: 'include' // Necesario para enviar cookies HTTP-only
   }
 })
 
