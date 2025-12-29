@@ -17,17 +17,13 @@ const { user } = await useAuthSSR()
  */
 const handleSignOut = async () => {
   try {
-    console.log('🔓 [SIGNOUT] Iniciando cierre de sesión...')
-
     // Llamar directamente a authClient en lugar de useAuth()
     await authClient.signOut()
-
-    console.log('✅ [SIGNOUT] Sesión cerrada exitosamente')
 
     // Redirigir al login
     await navigateTo('/login')
   } catch (error) {
-    console.error('❌ [SIGNOUT] Error al cerrar sesión:', error)
+    console.error('Error al cerrar sesión:', error)
     // Incluso si hay error, intentar redirigir al login
     await navigateTo('/login')
   }
