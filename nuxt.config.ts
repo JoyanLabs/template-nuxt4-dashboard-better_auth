@@ -1,8 +1,3 @@
-import { validateEnv } from './shared/config/env.schema'
-
-// Validar variables de entorno
-const env = validateEnv(process.env)
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 
@@ -30,8 +25,8 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      siteUrl: env.NUXT_PUBLIC_SITE_URL,
-      apiBaseUrl: env.NUXT_PUBLIC_API_BASE_URL
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'
     }
   },
 
@@ -39,7 +34,7 @@ export default defineNuxtConfig({
     // Proxy para la API del backend (auth, etc.)
     // Específicamente excluir _nuxt_icon del proxy
     '/api/auth/**': {
-      proxy: `${env.NUXT_PUBLIC_API_BASE_URL}/api/auth/**`
+      proxy: `${process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'}/api/auth/**`
     }
   },
   compatibilityDate: '2025-12-11',

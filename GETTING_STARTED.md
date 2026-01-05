@@ -27,11 +27,60 @@ Este repositorio es parte de la plantilla **Dashboard + Better Auth** de Joyan L
 
 ---
 
-## 🐳 Desarrollo con Docker
+## 🐳 Despliegue en Producción con Docker
 
-Si prefieres usar Docker para el frontend:
+### Variables de Entorno en Docker
+
+Las variables de entorno se pueden configurar de varias formas para producción:
+
+#### 1. **Archivo .env para producción**
 ```bash
+# Copia el archivo de ejemplo y configura para producción
+cp .env.example .env
+
+# Edita las variables para tu entorno de producción
+NUXT_PUBLIC_SITE_URL=https://miapp.com
+NUXT_PUBLIC_API_BASE_URL=https://api.miapp.com
+```
+
+#### 2. **Variables en docker-compose (Recomendado)**
+```bash
+# Configurar variables y ejecutar
+NUXT_PUBLIC_SITE_URL=https://miapp.com NUXT_PUBLIC_API_BASE_URL=https://api.miapp.com pnpm run docker:prod
+```
+
+#### 3. **Docker run con variables específicas**
+```bash
+docker run -e NUXT_PUBLIC_SITE_URL=https://produccion.com -e NUXT_PUBLIC_API_BASE_URL=https://api.produccion.com spp-frontend:latest
+```
+
+#### 4. **Script helper (Más fácil)**
+```bash
+# Producción con URLs específicas
+pnpm run docker:env prod https://miapp.com https://api.miapp.com
+
+# Staging
+pnpm run docker:env staging https://staging.miapp.com https://api-staging.miapp.com
+```
+
+### Comandos Docker disponibles
+
+```bash
+# Construir imagen
+pnpm run docker:build
+
+# Ejecutar en producción
 pnpm run docker:prod
+
+# Ejecutar con configuración personalizada
+pnpm run docker:env prod https://miapp.com https://api.miapp.com
+```
+
+### 💡 Desarrollo Local
+
+Para desarrollo local, usa Nuxt directamente (sin Docker):
+```bash
+pnpm run dev
 ```
 
 ---

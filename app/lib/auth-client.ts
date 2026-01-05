@@ -8,7 +8,7 @@ import { createAuthClient } from 'better-auth/vue'
  * Esto garantiza que las cookies HTTP-only se establezcan en el dominio correcto.
  *
  * Configuración dinámica:
- * - En desarrollo: http://localhost:4005 (de NUXT_PUBLIC_SITE_URL)
+ * - En desarrollo: http://localhost:3000 (de NUXT_PUBLIC_SITE_URL)
  * - En producción: tu dominio (ej: https://tuapp.com)
  */
 
@@ -20,7 +20,7 @@ const getBaseURL = () => {
   }
 
   // En servidor, usar variable de entorno o fallback
-  return process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:4005'
+  return process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 }
 
 export const authClient = createAuthClient({
