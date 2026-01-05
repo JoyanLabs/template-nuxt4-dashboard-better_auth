@@ -12,7 +12,31 @@ const tabItems = [{
 }]
 const selectedTab = ref('all')
 
-const { data: mails } = await useFetch<Mail[]>('/api/mails', { default: () => [] })
+// TODO: Implementar composable para obtener emails
+// Estructura de datos esperada: Mail[]
+// interface Mail {
+//   id: string
+//   subject: string
+//   from: { name: string; email: string }
+//   date: string
+//   unread?: boolean
+//   body: string
+// }
+//
+// Ejemplo de uso con useFetch:
+// const { data: mails, pending } = await useFetch<Mail[]>('/api/mails', {
+//   default: () => []
+// })
+//
+// O crear un composable personalizado:
+// const { mails, loading, refresh, markAsRead } = useInbox()
+//
+// El composable debería proveer:
+// - mails: Ref con lista de correos
+// - loading: Estado de carga
+// - refresh: Función para recargar datos
+// - markAsRead: Función para marcar como leído
+const mails = ref<Mail[]>([])
 
 // Filter mails based on the selected tab
 const filteredMails = computed(() => {

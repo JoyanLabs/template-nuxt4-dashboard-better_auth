@@ -1,41 +1,41 @@
 <script setup lang="ts">
 const state = reactive<{ [key: string]: boolean }>({
-  email: true,
-  desktop: false,
-  product_updates: true,
-  weekly_digest: false,
-  important_updates: true
+  example_notification: true,
+  security_alerts: true
 })
 
 const sections = [{
-  title: 'Notification channels',
-  description: 'Where can we notify you?',
+  title: 'Preferencias de ejemplo',
+  description: 'Configuración de ejemplo para la aplicación',
   fields: [{
-    name: 'email',
-    label: 'Email',
-    description: 'Receive a daily email digest.'
-  }, {
-    name: 'desktop',
-    label: 'Desktop',
-    description: 'Receive desktop notifications.'
+    name: 'example_notification',
+    label: 'Notificación de ejemplo',
+    description: 'Recibir notificaciones de ejemplo.'
   }]
 }, {
-  title: 'Account updates',
-  description: 'Receive updates about Nuxt UI.',
+  title: 'Seguridad',
+  description: 'Configuración de seguridad de la cuenta',
   fields: [{
-    name: 'weekly_digest',
-    label: 'Weekly digest',
-    description: 'Receive a weekly digest of news.'
-  }, {
-    name: 'product_updates',
-    label: 'Product updates',
-    description: 'Receive a monthly email with all new features and updates.'
-  }, {
-    name: 'important_updates',
-    label: 'Important updates',
-    description: 'Receive emails about important updates like security fixes, maintenance, etc.'
+    name: 'security_alerts',
+    label: 'Alertas de seguridad',
+    description: 'Recibir alertas sobre actividad sospechosa en tu cuenta.'
   }]
 }]
+
+// TODO: Implementar composable para gestión de notificaciones
+// Estructura de datos:
+// interface NotificationSettings {
+//   [key: string]: boolean
+// }
+//
+// Ejemplo de implementación:
+// const { settings, updateSettings, loading } = useNotificationSettings()
+//
+// El composable debería:
+// - Cargar las preferencias actuales del usuario
+// - Guardar cambios en el backend
+// - Manejar estados de carga y error
+// - Usar debounce para evitar múltiples llamadas
 
 async function onChange() {
   // Do something with data

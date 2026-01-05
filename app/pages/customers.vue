@@ -19,11 +19,43 @@ const columnFilters = ref([{
   value: ''
 }])
 const columnVisibility = ref()
-const rowSelection = ref({ 1: true })
 
-const { data, status } = await useFetch<User[]>('/api/customers', {
-  lazy: true
-})
+// TODO: Implementar composable para obtener clientes
+// Estructura de datos esperada según UTable de Nuxt UI:
+// interface User {
+//   id: number | string
+//   name: string
+//   email: string
+//   avatar?: { src: string; alt: string }
+//   location: string
+//   status: 'subscribed' | 'unsubscribed' | 'bounced'
+// }
+//
+// Ejemplo de implementación con useFetch:
+// const { data, status } = await useFetch<User[]>('/api/customers', {
+//   lazy: true
+// })
+//
+// O usar composable personalizado:
+// const { customers, loading, refresh, addCustomer, deleteCustomer } = useCustomersData()
+//
+// El composable debería proveer:
+// - customers: Ref con array de clientes
+// - loading: Estado de carga
+// - refresh: Función para recargar datos
+// - addCustomer: Función para agregar cliente
+// - deleteCustomer: Función para eliminar cliente(s)
+//
+// Para la selección de filas:
+// El componente UTable maneja el estado internamente a través de v-model:row-selection
+// Inicializar con ref({}) para selección vacía
+// El estado es un objeto donde las keys son los índices de las filas seleccionadas
+// Ejemplo: { 0: true, 2: true } significa que las filas 0 y 2 están seleccionadas
+//
+// Referencia: https://ui.nuxt.com/docs/components/table
+const data = ref<User[]>([])
+const status = ref('idle')
+const rowSelection = ref({})
 
 function getRowItems(row: Row<User>) {
   return [

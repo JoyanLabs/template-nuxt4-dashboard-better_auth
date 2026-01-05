@@ -18,6 +18,31 @@ const sampleEmails = [
   'ethan.harris@example.com'
 ]
 
+// TODO: Reemplazar datos de prueba con llamada real al backend
+//
+// Estructura de datos para tabla de ventas según UTable:
+// interface Sale {
+//   id: string
+//   date: string (ISO 8601 format)
+//   status: 'paid' | 'failed' | 'refunded'
+//   email: string
+//   amount: number
+// }
+//
+// Ejemplo de implementación:
+// const { data, pending } = await useSalesData(
+//   computed(() => ({ period: props.period, range: props.range }))
+// )
+//
+// El composable useSalesData debería:
+// - Aceptar parámetros reactivos de periodo y rango
+// - Retornar datos con auto-refresh cuando cambien los parámetros
+// - Usar useAsyncData con watch para reactividad
+// - Manejar estados de loading y error
+//
+// Referencia Nuxt UI Table: https://ui.nuxt.com/docs/components/table
+// El componente acepta un array de objetos y columns definidas con TableColumn<T>
+
 const { data } = await useAsyncData('sales', async () => {
   const sales: Sale[] = []
   const currentDate = new Date()

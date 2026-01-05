@@ -8,18 +8,36 @@ const profileSchema = z.object({
   name: z.string().min(2, 'Too short'),
   email: z.string().email('Invalid email'),
   username: z.string().min(2, 'Too short'),
-  avatar: z.string().optional(),
-  bio: z.string().optional()
+  avatar: z.string().optional()
 })
 
 type ProfileSchema = z.output<typeof profileSchema>
 
+// TODO: Implementar composable para gestión de perfil de usuario
+// Estructura de datos según el schema de Zod:
+// interface ProfileData {
+//   name: string
+//   email: string
+//   username: string
+//   avatar?: string
+// }
+//
+// Ejemplo de implementación:
+// const { profile, updateProfile, loading } = useUserProfile()
+//
+// El composable debería proveer:
+// - profile: Reactive data del perfil actual
+// - updateProfile: Función async para guardar cambios
+// - loading: Estado de carga
+// - error: Manejo de errores
+//
+// Para el avatar, usar FileReader API o similar para preview local
+// antes de subir al servidor
 const profile = reactive<Partial<ProfileSchema>>({
-  name: 'Benjamin Canac',
-  email: 'ben@nuxtlabs.com',
-  username: 'benjamincanac',
-  avatar: undefined,
-  bio: undefined
+  name: '',
+  email: '',
+  username: '',
+  avatar: undefined
 })
 const toast = useToast()
 async function onSubmit(event: FormSubmitEvent<ProfileSchema>) {
@@ -137,21 +155,6 @@ function onFileClick() {
             @change="onFileChange"
           >
         </div>
-      </UFormField>
-      <USeparator />
-      <UFormField
-        name="bio"
-        label="Bio"
-        description="Brief description for your profile. URLs are hyperlinked."
-        class="flex max-sm:flex-col justify-between items-start gap-4"
-        :ui="{ container: 'w-full' }"
-      >
-        <UTextarea
-          v-model="profile.bio"
-          :rows="5"
-          autoresize
-          class="w-full"
-        />
       </UFormField>
     </UPageCard>
   </UForm>

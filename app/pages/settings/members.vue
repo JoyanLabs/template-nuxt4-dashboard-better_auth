@@ -1,7 +1,26 @@
 <script setup lang="ts">
 import type { Member } from '~/types'
 
-const { data: members } = await useFetch<Member[]>('/api/members', { default: () => [] })
+// TODO: Implementar composable para obtener miembros del equipo
+// Estructura de datos esperada:
+// interface Member {
+//   id: string | number
+//   name: string
+//   username: string
+//   email: string
+//   avatar?: { src: string; alt: string }
+//   role: string
+// }
+//
+// Ejemplo de implementación:
+// const { members, loading, inviteMember, removeMember } = useTeamMembers()
+//
+// El composable debería incluir:
+// - members: Lista reactiva de miembros
+// - loading: Estado de carga
+// - inviteMember: Función para invitar nuevos miembros
+// - removeMember: Función para eliminar miembros
+const members = ref<Member[]>([])
 
 const q = ref('')
 
