@@ -11,6 +11,7 @@
 !/server
 !/public
 !/i18n
+!/shared
 
 # Exclude from app/
 app/node_modules
