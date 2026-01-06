@@ -8,6 +8,9 @@ FROM base AS build
 
 ENV CI=true
 
+# Aumentar el límite de memoria de Node.js para el build
+ENV NODE_OPTIONS=--max-old-space-size=4096
+
 # Variables de entorno con valores por defecto (desarrollo)
 # ⚠️ IMPORTANTE: Estas variables se pueden sobrescribir en runtime usando:
 #   - docker run -e VARIABLE=valor
