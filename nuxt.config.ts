@@ -31,10 +31,18 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    // Proxy para la API del backend (auth, etc.)
+    // Proxy para la API del backend (auth, users, roles)
     // Específicamente excluir _nuxt_icon del proxy
     '/api/auth/**': {
       proxy: `${process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'}/api/auth/**`
+    },
+    // Proxy para endpoints de usuarios
+    '/api/users/**': {
+      proxy: `${process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'}/api/users/**`
+    },
+    // Proxy para endpoints de roles
+    '/api/roles/**': {
+      proxy: `${process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'}/api/roles/**`
     }
   },
   compatibilityDate: '2025-12-11',

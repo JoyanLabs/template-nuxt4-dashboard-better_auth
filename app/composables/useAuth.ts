@@ -5,6 +5,12 @@ interface User {
   id: string
   email: string
   name: string
+  role?: 'user' | 'admin' // Rol del usuario en Better Auth
+  banned?: boolean // Estado de baneo
+  createdAt?: Date | string // Fecha de creación (Better Auth devuelve Date)
+  updatedAt?: Date | string // Fecha de actualización
+  emailVerified?: boolean // Email verificado
+  image?: string | null // Avatar/Imagen del usuario
   [key: string]: unknown
 }
 

@@ -1,4 +1,6 @@
+import { adminClient } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/vue'
+import { ac, roles } from '~/lib/permissions'
 
 /**
  * Cliente de autenticación de Better Auth
@@ -27,8 +29,24 @@ export const authClient = createAuthClient({
   baseURL: getBaseURL(),
   fetchOptions: {
     credentials: 'include' // Necesario para enviar cookies HTTP-only
-  }
+  },
+  plugins: [
+    // Plugin de admin con Access Control configurado
+    adminClient({
+      ac,
+      roles
+    })
+  ]
 })
 
 // Exportar métodos comunes para uso directo
 export const { signIn, signUp, signOut, useSession } = authClient
+
+/**
+ * Métodos de admin disponibles:
+ * - authClient.admin.listUsers()
+ * - authClient.admin.createUser()
+ * - authClient.admin.banUser()
+ * - authClient.admin.hasPermission({ permissions })
+ * - authClient.admin.checkRolePermission({ permissions, role })
+ */

@@ -22,10 +22,14 @@ export interface Mail {
 }
 
 export interface Member {
+  id: string | number
   name: string
   username: string
-  role: 'member' | 'owner'
-  avatar: AvatarProps
+  email: string
+  avatar?: AvatarProps
+  role: 'user' | 'admin' | 'moderator'
+  banned?: boolean
+  createdAt?: string
 }
 
 export interface Stat {
