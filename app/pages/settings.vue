@@ -1,29 +1,45 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-const links = [[{
-  label: 'General',
-  icon: 'i-lucide-user',
-  to: '/settings',
-  exact: true
-}, {
-  label: 'Members',
-  icon: 'i-lucide-users',
-  to: '/settings/members'
-}, {
-  label: 'Notifications',
-  icon: 'i-lucide-bell',
-  to: '/settings/notifications'
-}, {
-  label: 'Security',
-  icon: 'i-lucide-shield',
-  to: '/settings/security'
-}], [{
-  label: 'Documentation',
-  icon: 'i-lucide-book-open',
-  to: 'https://ui.nuxt.com/docs/getting-started/installation/nuxt',
-  target: '_blank'
-}]] satisfies NavigationMenuItem[][]
+const { checkPermission } = useRole()
+
+/**
+ * Links de navegación filtrados por permisos
+ */
+const links = computed(() => {
+  const items: NavigationMenuItem[] = [{
+    label: 'General',
+    icon: 'i-lucide-user',
+    to: '/settings',
+    exact: true
+  }]
+
+  // Users - solo visible si tiene permiso user:list
+  if (checkPermission({ user: ['list'] })) {
+    items.push({
+      label: 'Users',
+      icon: 'i-lucide-users',
+      to: '/settings/users'
+    })
+  }
+
+  items.push({
+    label: 'Notifications',
+    icon: 'i-lucide-bell',
+    to: '/settings/notifications'
+  }, {
+    label: 'Security',
+    icon: 'i-lucide-shield',
+    to: '/settings/security'
+  })
+
+  return [[...items], [{
+    label: 'Documentation',
+    icon: 'i-lucide-book-open',
+    to: 'https://ui.nuxt.com/docs/getting-started/installation/nuxt',
+    target: '_blank'
+  }]]
+})
 </script>
 
 <template>
