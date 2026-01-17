@@ -11,13 +11,27 @@ ENV CI=true
 # Aumentar el límite de memoria de Node.js para el build
 ENV NODE_OPTIONS=--max-old-space-size=4096
 
-# Variables de entorno con valores por defecto (desarrollo)
-# ⚠️ IMPORTANTE: Estas variables se pueden sobrescribir en runtime usando:
-#   - docker run -e VARIABLE=valor
-#   - docker-compose environment
-#   - archivos .env
-ENV NUXT_PUBLIC_SITE_URL=http://localhost:3000
-ENV NUXT_PUBLIC_API_BASE_URL=http://localhost:3001
+# ============================================================================
+# BUILD ARGUMENTS - Pasar al construir con: docker build --build-arg VAR=value
+# ============================================================================
+# Estas variables se usan durante el BUILD de Nuxt para configurar el proxy
+# y otras configuraciones que se "hornean" en el bundle final.
+#
+# Ejemplo de uso:
+#   docker build --build-arg NUXT_PUBLIC_API_BASE_URL=https://api.example.com .
+#
+# En docker-compose:
+#   build:
+#     args:
+#       - NUXT_PUBLIC_API_BASE_URL=https://api.example.com
+# ============================================================================
+
+ARG NUXT_PUBLIC_SITE_URL=http://localhost:3000
+ARG NUXT_PUBLIC_API_BASE_URL=http://localhost:3001
+
+# Convertir ARG a ENV para que estén disponibles durante pnpm run build
+ENV NUXT_PUBLIC_SITE_URL=${NUXT_PUBLIC_SITE_URL}
+ENV NUXT_PUBLIC_API_BASE_URL=${NUXT_PUBLIC_API_BASE_URL}
 ENV NODE_ENV=production
 
 RUN apk update && apk add --no-cache dumb-init=1.2.5-r3 && npm install -g pnpm@10.23.0
@@ -56,4 +70,3 @@ COPY --from=build $DIR/.output .output
 USER $USER
 EXPOSE $PORT
 CMD ["dumb-init", "node", ".output/server/index.mjs"]
-

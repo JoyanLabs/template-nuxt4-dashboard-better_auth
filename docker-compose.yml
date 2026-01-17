@@ -1,12 +1,15 @@
 services:
-  spp-frontend-production:
-    container_name: spp-frontend-production
+  app-frontend-production:
+    container_name: app-frontend-production
     network_mode: host
     build:
       target: production
       context: .
       args:
         - PORT=${PORT:-3000}
+        # ⚠️ IMPORTANTE: Estas variables se usan durante el BUILD para configurar el proxy
+        - NUXT_PUBLIC_SITE_URL=${NUXT_PUBLIC_SITE_URL:-http://localhost:3000}
+        - NUXT_PUBLIC_API_BASE_URL=${NUXT_PUBLIC_API_BASE_URL:-http://localhost:3001}
     environment:
       - NITRO_HOST=0.0.0.0
       - NITRO_PORT=${PORT:-3000}
@@ -22,5 +25,3 @@ services:
         reservations:
           cpus: '0.25'
           memory: '256m'
-
-
