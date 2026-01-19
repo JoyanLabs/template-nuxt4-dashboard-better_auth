@@ -34,7 +34,7 @@ ENV NUXT_PUBLIC_SITE_URL=${NUXT_PUBLIC_SITE_URL}
 ENV NUXT_PUBLIC_API_BASE_URL=${NUXT_PUBLIC_API_BASE_URL}
 ENV NODE_ENV=production
 
-RUN apk update && apk add --no-cache dumb-init=1.2.5-r3 && npm install -g pnpm@10.23.0
+RUN apk update && apk add --no-cache dumb-init=1.2.5-r3 && npm install -g pnpm@10.27.0
 
 COPY package.json pnpm-lock.yaml ./
 # Para paquetes privados de npm, descomenta las siguientes 3 líneas y comenta la línea simple:
