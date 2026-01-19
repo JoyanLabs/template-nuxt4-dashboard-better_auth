@@ -1,41 +1,40 @@
-name: 🐢 Setup Node
-description: Setup Node.js and install dependencies with caching
-author: SPP-Frontend
+name: '⚙️ Setup node'
+
+description: 'Setup node with project version and install dependencies'
 
 inputs:
-  node-version:
-    description: Node.js version to use
+  version:
+    description: 'Node version to use'
     required: false
-    default: '22'
+  npm_token:
+    description: 'NPM Token'
+    required: false
+    default: ''
 
 runs:
-  using: composite
+  using: "composite"
   steps:
-    - name: Setup Node.js ⚙️
-      uses: actions/setup-node@v6
-      with:
-        node-version: ${{ inputs.node-version }}
-
+    - name: Authenticate npm 🔑
+      if: inputs.npm_token != ''
+      shell: bash
+      run: echo "//registry.npmjs.org/:_authToken=${{ inputs.npm_token }}" > ~/.npmrc
     - name: Install pnpm 📦
       uses: pnpm/action-setup@v4
-      with:
-        version: 10.27.0
-        run_install: false
-
-    - name: Get pnpm store directory 🗂️
-      shell: bash
-      run: |
-        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-    - name: Setup pnpm cache 💾
+    - name: Cache Dependencies ⌛️
       uses: actions/cache@v5
+      id: cache-node-modules
       with:
-        path: ${{ env.STORE_PATH }}
-        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-        restore-keys: |
-          ${{ runner.os }}-pnpm-store-
-
+        path: |
+          ~/.pnpm-store
+          node_modules
+        key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('.github/actions/setup-node/action.yml') }}-node-${{ hashFiles('.nvmrc') }}-${{ inputs.version }}
+    - name: Setup Node ⚙️
+      uses: actions/setup-node@v6
+      with:
+        node-version: ${{ inputs.version }}
+        node-version-file: '.nvmrc'
+        cache: 'pnpm'
     - name: Install dependencies 📥
+      if: steps.cache-node-modules.outputs.cache-hit != 'true'
       shell: bash
       run: pnpm install --frozen-lockfile
-

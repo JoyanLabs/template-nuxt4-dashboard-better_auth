@@ -5,9 +5,24 @@
   "lockFileMaintenance": {
     "enabled": true
   },
-  "packageRules": [{
-    "matchDepTypes": ["resolutions"],
-    "enabled": false
-  }],
-  "postUpdateOptions": ["pnpmDedupe"]
+  "postUpdateOptions": [
+    "pnpmDedupe"
+  ],
+  "packageRules": [
+    {
+      "matchDepTypes": [
+        "resolutions"
+      ],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": [
+        "pnpm"
+      ],
+      "enabled": false
+    }
+  ],
+  "constraints": {
+    "pnpm": "10.27.0"
+  }
 }
