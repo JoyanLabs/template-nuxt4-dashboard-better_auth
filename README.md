@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://nodejs.org/docs/latest-v22.x/api/index.html"><img src="https://img.shields.io/badge/node-22.x-green.svg" alt="node"/></a>
+  <a href="https://nodejs.org/docs/latest-v24.x/api/index.html"><img src="https://img.shields.io/badge/node-24.x-green.svg" alt="node"/></a>
   <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/typescript-5.x-blue.svg" alt="typescript"/></a>
   <a href="https://pnpm.io/"><img src="https://img.shields.io/badge/pnpm-10.x-orange.svg" alt="pnpm"/></a>
   <a href="https://nuxt.com/"><img src="https://img.shields.io/badge/Nuxt-4.x-00DC82.svg" alt="nuxt"/></a>
@@ -61,7 +61,7 @@ This template provides a solid foundation for building modern, scalable dashboar
 Install `pnpm` globally (if not installed):
 
 ```bash
-npm install -g pnpm@10.23.0
+npm install -g pnpm@10.27.0
 ```
 
 Install dependencies:
@@ -171,6 +171,24 @@ pnpm run lint --fix
 |---------|-------------|
 | `pnpm run docker:build` | Build production Docker image |
 | `pnpm run docker:prod` | Run production container |
+
+---
+
+## ⚙️ Gestión de Versiones
+
+Este proyecto utiliza un control estricto de versiones para asegurar la consistencia entre el entorno local, CI y Docker mediante `engineStrict: true`.
+
+- **Node.js**: La versión LTS Krypton (24.x) está fijada en [.nvmrc](.nvmrc) y `package.json`.
+- **pnpm**: La versión está fijada en `package.json` (`packageManager`).
+
+### Cómo actualizar versiones
+
+Para actualizar Node o pnpm en el futuro:
+1.  **Node**: Cambia la versión en [.nvmrc](.nvmrc).
+2.  **package.json**: Actualiza `packageManager` y el campo `engines`.
+3.  **renovate.json**: Sincroniza el campo `constraints.pnpm`.
+4.  **Dockerfile**: Actualiza la imagen base `node:24-alpine` y la instalación de `pnpm@10.27.0`.
+5.  **pnpm install**: Ejecuta para regenerar el lockfile con la nueva versión.
 
 ---
 
