@@ -3,10 +3,15 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 const route = useRoute()
 const toast = useToast()
+const { checkPermission } = useRole()
 
 const open = ref(false)
 
-const links = [[{
+/**
+ * Items de navegación base
+ * Los items con permisos se agregan dinámicamente
+ */
+const baseLinks: NavigationMenuItem[] = [{
   label: 'Home',
   icon: 'i-lucide-house',
   to: '/',
@@ -28,26 +33,33 @@ const links = [[{
   onSelect: () => {
     open.value = false
   }
-}, {
-  label: 'Settings',
-  to: '/settings',
-  icon: 'i-lucide-settings',
-  defaultOpen: true,
-  type: 'trigger',
-  children: [{
+}]
+
+/**
+ * Settings children - filtrados por permisos
+ */
+const settingsChildren = computed(() => {
+  const children: NavigationMenuItem[] = [{
     label: 'General',
     to: '/settings',
     exact: true,
     onSelect: () => {
       open.value = false
     }
-  }, {
-    label: 'Members',
-    to: '/settings/members',
-    onSelect: () => {
-      open.value = false
-    }
-  }, {
+  }]
+
+  // Users - solo visible si tiene permiso user:list (admin, moderator)
+  if (checkPermission({ user: ['list'] })) {
+    children.push({
+      label: 'Users',
+      to: '/settings/users',
+      onSelect: () => {
+        open.value = false
+      }
+    })
+  }
+
+  children.push({
     label: 'Notifications',
     to: '/settings/notifications',
     onSelect: () => {
@@ -59,18 +71,35 @@ const links = [[{
     onSelect: () => {
       open.value = false
     }
-  }]
-}], [{
+  })
+
+  return children
+})
+
+/**
+ * Links de navegación reactivos
+ */
+const links = computed(() => [[
+  ...baseLinks,
+  {
+    label: 'Settings',
+    to: '/settings',
+    icon: 'i-lucide-settings',
+    defaultOpen: true,
+    type: 'trigger' as const,
+    children: settingsChildren.value
+  }
+], [{
   label: 'Help & Support',
   icon: 'i-lucide-info',
   to: 'https://github.com/nuxt-ui-templates/dashboard',
   target: '_blank'
-}]] satisfies NavigationMenuItem[][]
+}]])
 
 const groups = computed(() => [{
   id: 'links',
   label: 'Go to',
-  items: links.flat()
+  items: links.value.flat()
 }, {
   id: 'code',
   label: 'Code',

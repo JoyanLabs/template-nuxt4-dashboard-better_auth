@@ -4,6 +4,7 @@
 @theme static {
   --font-sans: 'Public Sans', sans-serif;
 
+  /* Color verde (existente) */
   --color-green-50: #EFFDF5;
   --color-green-100: #D9FBE8;
   --color-green-200: #B3F5D1;
@@ -15,4 +16,48 @@
   --color-green-800: #016538;
   --color-green-900: #0A5331;
   --color-green-950: #052E16;
+
+  /* ========================================================================
+   * Color de marca personalizado (ejemplo)
+   * ========================================================================
+   * Reemplaza estos valores con los colores de tu marca.
+   * Puedes generar tu paleta en: https://uicolors.app/create
+   *
+   * Para usar este color como primario, configura en app.config.ts:
+   *   ui: { colors: { primary: 'brand' } }
+   * ========================================================================
+   */
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-300: #93c5fd;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+  --color-brand-800: #1e40af;
+  --color-brand-900: #1e3a8a;
+  --color-brand-950: #172554;
+
+}
+
+/* Soporte para oklch y display-p3 en navegadores modernos */
+@supports (color: oklch(0% 0 0)) {
+  @media (color-gamut: p3) {
+    @theme static {
+      /* Color de marca con oklch (colores más vibrantes en pantallas modernas) */
+      --color-brand-50: oklch(97% 0.02 240);
+      --color-brand-100: oklch(94% 0.04 240);
+      --color-brand-200: oklch(88% 0.08 240);
+      --color-brand-300: oklch(78% 0.12 240);
+      --color-brand-400: oklch(68% 0.16 240);
+      --color-brand-500: oklch(58% 0.18 240);
+      --color-brand-600: oklch(50% 0.20 240);
+      --color-brand-700: oklch(45% 0.18 240);
+      --color-brand-800: oklch(40% 0.15 240);
+      --color-brand-900: oklch(35% 0.12 240);
+      --color-brand-950: oklch(25% 0.08 240);
+
+    }
+  }
 }
