@@ -78,8 +78,8 @@ const isModalOpen = ref(false)
 
     <!-- Header con botón de invitar -->
     <UPageCard
-      title="Users"
-      description="Manage users and their roles."
+      title="Usuarios"
+      description="Gestiona los usuarios y sus roles."
       variant="naked"
       orientation="horizontal"
       class="mb-4"
@@ -117,7 +117,7 @@ const isModalOpen = ref(false)
         <UInput
           v-model="q"
           icon="i-lucide-search"
-          placeholder="Search users"
+          placeholder="Buscar usuarios"
           autofocus
           class="w-full"
         />
