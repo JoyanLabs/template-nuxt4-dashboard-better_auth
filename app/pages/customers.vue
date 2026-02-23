@@ -1,247 +1,109 @@
 <script setup lang="ts">
 import type { TableColumn } from '@nuxt/ui'
-import { upperFirst } from 'scule'
-import { getPaginationRowModel } from '@tanstack/table-core'
-import type { Row } from '@tanstack/table-core'
-import type { User } from '~/types'
 
-const UAvatar = resolveComponent('UAvatar')
-const UButton = resolveComponent('UButton')
-const UBadge = resolveComponent('UBadge')
-const UDropdownMenu = resolveComponent('UDropdownMenu')
-const UCheckbox = resolveComponent('UCheckbox')
-
-const toast = useToast()
-const table = useTemplateRef('table')
-
-const columnFilters = ref([{
-  id: 'email',
-  value: ''
-}])
-const columnVisibility = ref()
-
-// TODO: Implementar composable para obtener clientes
-// Estructura de datos esperada según UTable de Nuxt UI:
-// interface User {
-//   id: number | string
-//   name: string
-//   email: string
-//   avatar?: { src: string; alt: string }
-//   location: string
-//   status: 'subscribed' | 'unsubscribed' | 'bounced'
-// }
-//
-// Ejemplo de implementación con useFetch:
-// const { data, status } = await useFetch<User[]>('/api/customers', {
-//   lazy: true
-// })
-//
-// O usar composable personalizado:
-// const { customers, loading, refresh, addCustomer, deleteCustomer } = useCustomersData()
-//
-// El composable debería proveer:
-// - customers: Ref con array de clientes
-// - loading: Estado de carga
-// - refresh: Función para recargar datos
-// - addCustomer: Función para agregar cliente
-// - deleteCustomer: Función para eliminar cliente(s)
-//
-// Para la selección de filas:
-// El componente UTable maneja el estado internamente a través de v-model:row-selection
-// Inicializar con ref({}) para selección vacía
-// El estado es un objeto donde las keys son los índices de las filas seleccionadas
-// Ejemplo: { 0: true, 2: true } significa que las filas 0 y 2 están seleccionadas
-//
-// Referencia: https://ui.nuxt.com/docs/components/table
-const data = ref<User[]>([])
-const status = ref('idle')
-const rowSelection = ref({})
-
-function getRowItems(row: Row<User>) {
-  return [
-    {
-      type: 'label',
-      label: 'Actions'
-    },
-    {
-      label: 'Copy customer ID',
-      icon: 'i-lucide-copy',
-      onSelect() {
-        navigator.clipboard.writeText(row.original.id.toString())
-        toast.add({
-          title: 'Copied to clipboard',
-          description: 'Customer ID copied to clipboard'
-        })
-      }
-    },
-    {
-      type: 'separator'
-    },
-    {
-      label: 'View customer details',
-      icon: 'i-lucide-list'
-    },
-    {
-      label: 'View customer payments',
-      icon: 'i-lucide-wallet'
-    },
-    {
-      type: 'separator'
-    },
-    {
-      label: 'Delete customer',
-      icon: 'i-lucide-trash',
-      color: 'error',
-      onSelect() {
-        toast.add({
-          title: 'Customer deleted',
-          description: 'The customer has been deleted.'
-        })
-      }
-    }
-  ]
+// Datos mockeados para clientes
+interface Cliente {
+  id: string
+  name: string
+  email: string
+  empresa: string
+  telefono: string
+  estado: 'activo' | 'inactivo' | 'prospecto'
+  fechaRegistro: string
 }
 
-const columns: TableColumn<User>[] = [
-  {
-    id: 'select',
-    header: ({ table }) =>
-      h(UCheckbox, {
-        'modelValue': table.getIsSomePageRowsSelected()
-          ? 'indeterminate'
-          : table.getIsAllPageRowsSelected(),
-        'onUpdate:modelValue': (value: boolean | 'indeterminate') =>
-          table.toggleAllPageRowsSelected(!!value),
-        'ariaLabel': 'Select all'
-      }),
-    cell: ({ row }) =>
-      h(UCheckbox, {
-        'modelValue': row.getIsSelected(),
-        'onUpdate:modelValue': (value: boolean | 'indeterminate') => row.toggleSelected(!!value),
-        'ariaLabel': 'Select row'
-      })
-  },
-  {
-    accessorKey: 'id',
-    header: 'ID'
-  },
+const clientesData: Cliente[] = [
+  { id: '1', name: 'Juan Pérez', email: 'juan@empresa.com', empresa: 'Empresa ABC', telefono: '+51 999 111 111', estado: 'activo', fechaRegistro: '2024-01-15' },
+  { id: '2', name: 'María García', email: 'maria@empresa.com', empresa: 'Corporación XYZ', telefono: '+51 999 222 222', estado: 'activo', fechaRegistro: '2024-02-20' },
+  { id: '3', name: 'Carlos López', email: 'carlos@empresa.com', empresa: 'Industrias 123', telefono: '+51 999 333 333', estado: 'prospecto', fechaRegistro: '2024-03-10' },
+  { id: '4', name: 'Ana Martínez', email: 'ana@empresa.com', empresa: 'Servicios Perú', telefono: '+51 999 444 444', estado: 'inactivo', fechaRegistro: '2024-01-25' },
+  { id: '5', name: 'Luis Rodríguez', email: 'luis@empresa.com', empresa: 'Constructora AAA', telefono: '+51 999 555 555', estado: 'activo', fechaRegistro: '2024-04-05' },
+  { id: '6', name: 'Carmen Torres', email: 'carmen@empresa.com', empresa: 'Consultores Ltd', telefono: '+51 999 666 666', estado: 'activo', fechaRegistro: '2024-02-28' },
+  { id: '7', name: 'Pedro Sánchez', email: 'pedro@empresa.com', empresa: 'Tech Solutions', telefono: '+51 999 777 777', estado: 'prospecto', fechaRegistro: '2024-05-12' },
+  { id: '8', name: 'Laura Díaz', email: 'laura@empresa.com', empresa: 'Marketing Pro', telefono: '+51 999 888 888', estado: 'activo', fechaRegistro: '2024-03-22' },
+]
+
+const clientes = ref<Cliente[]>(clientesData)
+const search = ref('')
+const page = ref(1)
+const pageSize = ref(10)
+
+const filteredClientes = computed(() => {
+  if (!search.value) return clientes.value
+  const query = search.value.toLowerCase()
+  return clientes.value.filter(c =>
+    c.name.toLowerCase().includes(query) ||
+    c.email.toLowerCase().includes(query) ||
+    c.empresa.toLowerCase().includes(query)
+  )
+})
+
+const total = computed(() => filteredClientes.value.length)
+
+const columns: TableColumn<Cliente>[] = [
   {
     accessorKey: 'name',
-    header: 'Name',
-    cell: ({ row }) => {
-      return h('div', { class: 'flex items-center gap-3' }, [
-        h(UAvatar, {
-          ...row.original.avatar,
-          size: 'lg'
-        }),
-        h('div', undefined, [
-          h('p', { class: 'font-medium text-highlighted' }, row.original.name),
-          h('p', { class: '' }, `@${row.original.name}`)
-        ])
-      ])
-    }
+    header: 'Nombre',
+    cell: ({ row }) => h('div', { class: 'font-medium' }, row.original.name)
   },
   {
     accessorKey: 'email',
-    header: ({ column }) => {
-      const isSorted = column.getIsSorted()
-
-      return h(UButton, {
-        color: 'neutral',
-        variant: 'ghost',
-        label: 'Email',
-        icon: isSorted
-          ? isSorted === 'asc'
-            ? 'i-lucide-arrow-up-narrow-wide'
-            : 'i-lucide-arrow-down-wide-narrow'
-          : 'i-lucide-arrow-up-down',
-        class: '-mx-2.5',
-        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
-      })
-    }
+    header: 'Email'
   },
   {
-    accessorKey: 'location',
-    header: 'Location',
-    cell: ({ row }) => row.original.location
+    accessorKey: 'empresa',
+    header: 'Empresa'
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
-    filterFn: 'equals',
+    accessorKey: 'telefono',
+    header: 'Teléfono'
+  },
+  {
+    accessorKey: 'estado',
+    header: 'Estado',
     cell: ({ row }) => {
-      const color = {
-        subscribed: 'success' as const,
-        unsubscribed: 'error' as const,
-        bounced: 'warning' as const
-      }[row.original.status]
-
-      return h(UBadge, { class: 'capitalize', variant: 'subtle', color }, () =>
-        row.original.status
-      )
+      const colors = {
+        activo: 'success' as const,
+        inactivo: 'error' as const,
+        prospecto: 'warning' as const
+      }
+      const labels = {
+        activo: 'Activo',
+        inactivo: 'Inactivo',
+        prospecto: 'Prospecto'
+      }
+      return h(UBadge, { color: colors[row.original.estado], variant: 'subtle' }, () => labels[row.original.estado])
     }
   },
   {
-    id: 'actions',
-    cell: ({ row }) => {
-      return h(
-        'div',
-        { class: 'text-right' },
-        h(
-          UDropdownMenu,
-          {
-            content: {
-              align: 'end'
-            },
-            items: getRowItems(row)
-          },
-          () =>
-            h(UButton, {
-              icon: 'i-lucide-ellipsis-vertical',
-              color: 'neutral',
-              variant: 'ghost',
-              class: 'ml-auto'
-            })
-        )
-      )
-    }
+    accessorKey: 'fechaRegistro',
+    header: 'Fecha Registro'
   }
 ]
 
-const statusFilter = ref('all')
+const toast = useToast()
 
-watch(() => statusFilter.value, (newVal) => {
-  if (!table?.value?.tableApi) return
+function handleCreate() {
+  toast.add({
+    title: 'Crear cliente',
+    description: 'Funcionalidad en desarrollo',
+    color: 'info'
+  })
+}
 
-  const statusColumn = table.value.tableApi.getColumn('status')
-  if (!statusColumn) return
-
-  if (newVal === 'all') {
-    statusColumn.setFilterValue(undefined)
-  } else {
-    statusColumn.setFilterValue(newVal)
-  }
-})
-
-const email = computed({
-  get: (): string => {
-    return (table.value?.tableApi?.getColumn('email')?.getFilterValue() as string) || ''
-  },
-  set: (value: string) => {
-    table.value?.tableApi?.getColumn('email')?.setFilterValue(value || undefined)
-  }
-})
-
-const pagination = ref({
-  pageIndex: 0,
-  pageSize: 10
-})
+function handleRowClick(row: Cliente) {
+  toast.add({
+    title: row.name,
+    description: `${row.empresa} - ${row.email}`,
+    color: 'info'
+  })
+}
 </script>
 
 <template>
   <UDashboardPanel id="customers">
     <template #header>
-      <UDashboardNavbar title="Customers">
+      <UDashboardNavbar title="Clientes">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
@@ -253,110 +115,20 @@ const pagination = ref({
     </template>
 
     <template #body>
-      <div class="flex flex-wrap items-center justify-between gap-1.5">
-        <UInput
-          v-model="email"
-          class="max-w-sm"
-          icon="i-lucide-search"
-          placeholder="Filter emails..."
-        />
-
-        <div class="flex flex-wrap items-center gap-1.5">
-          <CustomersDeleteModal :count="table?.tableApi?.getFilteredSelectedRowModel().rows.length">
-            <UButton
-              v-if="table?.tableApi?.getFilteredSelectedRowModel().rows.length"
-              label="Delete"
-              color="error"
-              variant="subtle"
-              icon="i-lucide-trash"
-            >
-              <template #trailing>
-                <UKbd>
-                  {{ table?.tableApi?.getFilteredSelectedRowModel().rows.length }}
-                </UKbd>
-              </template>
-            </UButton>
-          </CustomersDeleteModal>
-
-          <USelect
-            v-model="statusFilter"
-            :items="[
-              { label: 'All', value: 'all' },
-              { label: 'Subscribed', value: 'subscribed' },
-              { label: 'Unsubscribed', value: 'unsubscribed' },
-              { label: 'Bounced', value: 'bounced' }
-            ]"
-            :ui="{ trailingIcon: 'group-data-[state=open]:rotate-180 transition-transform duration-200' }"
-            placeholder="Filter status"
-            class="min-w-28"
-          />
-          <UDropdownMenu
-            :items="
-              table?.tableApi
-                ?.getAllColumns()
-                .filter((column: any) => column.getCanHide())
-                .map((column: any) => ({
-                  label: upperFirst(column.id),
-                  type: 'checkbox' as const,
-                  checked: column.getIsVisible(),
-                  onUpdateChecked(checked: boolean) {
-                    table?.tableApi?.getColumn(column.id)?.toggleVisibility(!!checked)
-                  },
-                  onSelect(e?: Event) {
-                    e?.preventDefault()
-                  }
-                }))
-            "
-            :content="{ align: 'end' }"
-          >
-            <UButton
-              label="Display"
-              color="neutral"
-              variant="outline"
-              trailing-icon="i-lucide-settings-2"
-            />
-          </UDropdownMenu>
-        </div>
-      </div>
-
-      <UTable
-        ref="table"
-        v-model:column-filters="columnFilters"
-        v-model:column-visibility="columnVisibility"
-        v-model:row-selection="rowSelection"
-        v-model:pagination="pagination"
-        :pagination-options="{
-          getPaginationRowModel: getPaginationRowModel()
-        }"
-        class="shrink-0"
-        :data="data"
+      <UiDataTable
+        :data="filteredClientes"
         :columns="columns"
-        :loading="status === 'pending'"
-        :ui="{
-          base: 'table-fixed border-separate border-spacing-0',
-          thead: '[&>tr]:bg-elevated/50 [&>tr]:after:content-none',
-          tbody: '[&>tr]:last:[&>td]:border-b-0',
-          th: 'py-2 first:rounded-l-lg last:rounded-r-lg border-y border-default first:border-l last:border-r',
-          td: 'border-b border-default',
-          separator: 'h-0'
-        }"
+        :total="total"
+        v-model:search="search"
+        v-model:page="page"
+        v-model:page-size="pageSize"
+        title="Clientes"
+        description="Gestión de clientes del sistema"
+        search-placeholder="Buscar clientes..."
+        clickable
+        @create="handleCreate"
+        @row-click="handleRowClick"
       />
-
-      <div class="flex items-center justify-between gap-3 border-t border-default pt-4 mt-auto">
-        <div class="text-sm text-muted">
-          {{ table?.tableApi?.getFilteredSelectedRowModel().rows.length || 0 }} of
-          {{ table?.tableApi?.getFilteredRowModel().rows.length || 0 }} row(s) selected.
-        </div>
-
-        <div class="flex items-center gap-1.5">
-          <UPagination
-            :default-page="(table?.tableApi?.getState().pagination.pageIndex || 0) + 1"
-            :items-per-page="table?.tableApi?.getState().pagination.pageSize"
-            :total="table?.tableApi?.getFilteredRowModel().rows.length"
-            @update:page="(p: number) => table?.tableApi?.setPageIndex(p - 1)"
-          />
-        </div>
-      </div>
     </template>
   </UDashboardPanel>
 </template>

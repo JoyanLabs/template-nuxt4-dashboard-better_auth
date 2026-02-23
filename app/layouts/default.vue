@@ -12,14 +12,14 @@ const open = ref(false)
  * Los items con permisos se agregan dinámicamente
  */
 const baseLinks: NavigationMenuItem[] = [{
-  label: 'Home',
+  label: 'Inicio',
   icon: 'i-lucide-house',
   to: '/',
   onSelect: () => {
     open.value = false
   }
 }, {
-  label: 'Inbox',
+  label: 'Bandeja de entrada',
   icon: 'i-lucide-inbox',
   to: '/inbox',
   badge: '4',
@@ -27,7 +27,7 @@ const baseLinks: NavigationMenuItem[] = [{
     open.value = false
   }
 }, {
-  label: 'Customers',
+  label: 'Clientes',
   icon: 'i-lucide-users',
   to: '/customers',
   onSelect: () => {
@@ -39,19 +39,12 @@ const baseLinks: NavigationMenuItem[] = [{
  * Settings children - filtrados por permisos
  */
 const settingsChildren = computed(() => {
-  const children: NavigationMenuItem[] = [{
-    label: 'General',
-    to: '/settings',
-    exact: true,
-    onSelect: () => {
-      open.value = false
-    }
-  }]
+  const children: NavigationMenuItem[] = []
 
   // Users - solo visible si tiene permiso user:list (admin, moderator)
   if (checkPermission({ user: ['list'] })) {
     children.push({
-      label: 'Users',
+      label: 'Usuarios',
       to: '/settings/users',
       onSelect: () => {
         open.value = false
@@ -60,13 +53,13 @@ const settingsChildren = computed(() => {
   }
 
   children.push({
-    label: 'Notifications',
+    label: 'Notificaciones',
     to: '/settings/notifications',
     onSelect: () => {
       open.value = false
     }
   }, {
-    label: 'Security',
+    label: 'Seguridad',
     to: '/settings/security',
     onSelect: () => {
       open.value = false
@@ -82,19 +75,14 @@ const settingsChildren = computed(() => {
 const links = computed(() => [[
   ...baseLinks,
   {
-    label: 'Settings',
+    label: 'Configuración',
     to: '/settings',
     icon: 'i-lucide-settings',
     defaultOpen: true,
     type: 'trigger' as const,
     children: settingsChildren.value
   }
-], [{
-  label: 'Help & Support',
-  icon: 'i-lucide-info',
-  to: 'https://github.com/nuxt-ui-templates/dashboard',
-  target: '_blank'
-}]])
+]])
 
 const groups = computed(() => [{
   id: 'links',
@@ -157,14 +145,6 @@ onMounted(async () => {
           orientation="vertical"
           tooltip
           popover
-        />
-
-        <UNavigationMenu
-          :collapsed="collapsed"
-          :items="links[1]"
-          orientation="vertical"
-          tooltip
-          class="mt-auto"
         />
       </template>
 

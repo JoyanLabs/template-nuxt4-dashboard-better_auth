@@ -20,9 +20,9 @@ const { createUser } = useUsersMutations()
 const toast = useToast()
 
 const roles = [
-  { label: 'Admin', value: 'admin' },
-  { label: 'Moderator', value: 'moderator' },
-  { label: 'User', value: 'user' }
+  { label: 'Administrador', value: 'admin' },
+  { label: 'Moderador', value: 'moderator' },
+  { label: 'Usuario', value: 'user' }
 ]
 
 const state = reactive<CreateUserForm>({

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui'
 import type { Member } from '~/types'
-import type { RoleName } from '~/lib/permissions'
+import type { RoleName } from '~/utils/permissions'
 
 defineProps<{
   users: Member[]
@@ -29,9 +29,9 @@ const userForPassword = ref<Member | null>(null)
 
 // Roles disponibles para el selector
 const availableRoles: { value: RoleName, label: string }[] = [
-  { value: 'user', label: 'User' },
-  { value: 'moderator', label: 'Moderator' },
-  { value: 'admin', label: 'Admin' }
+  { value: 'user', label: 'Usuario' },
+  { value: 'moderator', label: 'Moderador' },
+  { value: 'admin', label: 'Administrador' }
 ]
 
 /**
@@ -143,7 +143,7 @@ const getDropdownItems = (user: Member): DropdownMenuItem[] => {
 
   if (checkPermission({ user: ['ban'] })) {
     items.push({
-      label: user.banned ? 'Unban user' : 'Ban user',
+      label: user.banned ? 'Desbanear usuario' : 'Banear usuario',
       icon: user.banned ? 'i-lucide-check-circle' : 'i-lucide-ban',
       color: user.banned ? 'success' as const : 'warning' as const,
       onSelect: () => handleBanToggle(user)
@@ -152,20 +152,20 @@ const getDropdownItems = (user: Member): DropdownMenuItem[] => {
 
   if (checkPermission({ user: ['delete'] })) {
     items.push({
-      label: 'Edit details',
+      label: 'Editar detalles',
       icon: 'i-lucide-user-cog',
       onSelect: () => handleOpenUpdateModal(user)
     })
 
     items.push({
-      label: 'Change password',
+      label: 'Cambiar contraseña',
       icon: 'i-lucide-key-round',
       color: 'primary' as const,
       onSelect: () => handleOpenPasswordModal(user)
     })
 
     items.push({
-      label: 'Remove user',
+      label: 'Eliminar usuario',
       icon: 'i-lucide-trash-2',
       color: 'error' as const,
       onSelect: () => handleOpenDeleteModal(user)
@@ -201,7 +201,7 @@ const getDropdownItems = (user: Member): DropdownMenuItem[] => {
               variant="subtle"
               size="xs"
             >
-              Banned
+              Baneado
             </UBadge>
           </p>
           <p class="text-muted truncate">
