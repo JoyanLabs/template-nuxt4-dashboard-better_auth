@@ -20,7 +20,7 @@ const clientesData: Cliente[] = [
   { id: '5', name: 'Luis Rodríguez', email: 'luis@empresa.com', empresa: 'Constructora AAA', telefono: '+51 999 555 555', estado: 'activo', fechaRegistro: '2024-04-05' },
   { id: '6', name: 'Carmen Torres', email: 'carmen@empresa.com', empresa: 'Consultores Ltd', telefono: '+51 999 666 666', estado: 'activo', fechaRegistro: '2024-02-28' },
   { id: '7', name: 'Pedro Sánchez', email: 'pedro@empresa.com', empresa: 'Tech Solutions', telefono: '+51 999 777 777', estado: 'prospecto', fechaRegistro: '2024-05-12' },
-  { id: '8', name: 'Laura Díaz', email: 'laura@empresa.com', empresa: 'Marketing Pro', telefono: '+51 999 888 888', estado: 'activo', fechaRegistro: '2024-03-22' },
+  { id: '8', name: 'Laura Díaz', email: 'laura@empresa.com', empresa: 'Marketing Pro', telefono: '+51 999 888 888', estado: 'activo', fechaRegistro: '2024-03-22' }
 ]
 
 const clientes = ref<Cliente[]>(clientesData)
@@ -32,9 +32,9 @@ const filteredClientes = computed(() => {
   if (!search.value) return clientes.value
   const query = search.value.toLowerCase()
   return clientes.value.filter(c =>
-    c.name.toLowerCase().includes(query) ||
-    c.email.toLowerCase().includes(query) ||
-    c.empresa.toLowerCase().includes(query)
+    c.name.toLowerCase().includes(query)
+    || c.email.toLowerCase().includes(query)
+    || c.empresa.toLowerCase().includes(query)
   )
 })
 
@@ -116,12 +116,12 @@ function handleRowClick(row: Cliente) {
 
     <template #body>
       <UiDataTable
-        :data="filteredClientes"
-        :columns="columns"
-        :total="total"
         v-model:search="search"
         v-model:page="page"
         v-model:page-size="pageSize"
+        :data="filteredClientes"
+        :columns="columns"
+        :total="total"
         title="Clientes"
         description="Gestión de clientes del sistema"
         search-placeholder="Buscar clientes..."

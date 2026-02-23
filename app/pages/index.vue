@@ -29,11 +29,11 @@ const items = [[{
   onSelect: handleSignOut
 }]] satisfies DropdownMenuItem[][]
 
-const range = shallowRef<Range>({
+const _range = shallowRef<Range>({
   start: new Date(new Date().setDate(new Date().getDate() - 14)),
   end: new Date()
 })
-const period = ref<Period>('daily')
+const _period = ref<Period>('daily')
 </script>
 
 <template>

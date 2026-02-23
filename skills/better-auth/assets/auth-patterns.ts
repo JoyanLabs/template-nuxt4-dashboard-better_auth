@@ -65,7 +65,7 @@ export type RoleName = keyof typeof roles
 // WRAPPER PARA SSR
 // =============================================================================
 
-export function useAuthFetch<T>(url: string | Request, options?: any) {
+export function useAuthFetch<T>(_url: string | Request, options?: Record<string, unknown>) {
   const urlString = typeof url === 'string' ? url : url.url
   const relativeUrl = urlString.replace(/^https?:\/\/[^/]+/, '')
   return useFetch(relativeUrl, options)
@@ -106,8 +106,9 @@ export function useAuth() {
         return { success: false, error: result.error.message }
       }
       return { success: true, user: result.data?.user }
-    } catch (err: any) {
-      return { success: false, error: err.message || 'Error al iniciar sesión' }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Error al iniciar sesión'
+      return { success: false, error: message }
     }
   }
 
@@ -118,8 +119,9 @@ export function useAuth() {
         return { success: false, error: result.error.message }
       }
       return { success: true, user: result.data?.user }
-    } catch (err: any) {
-      return { success: false, error: err.message || 'Error al registrarse' }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Error al registrarse'
+      return { success: false, error: message }
     }
   }
 
@@ -127,8 +129,9 @@ export function useAuth() {
     try {
       await authClient.signOut()
       return { success: true }
-    } catch (err: any) {
-      return { success: false, error: err.message || 'Error al cerrar sesión' }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Error al cerrar sesión'
+      return { success: false, error: message }
     }
   }
 
@@ -151,13 +154,13 @@ export function useAuth() {
 
 export function useRole() {
   const { user } = useAuth()
-  
+
   const isAdmin = computed(() => user.value?.role === 'admin')
   const isModerator = computed(() => user.value?.role === 'moderator')
   const currentRole = computed<RoleName>(() => {
     return (user.value?.role as RoleName) || 'user'
   })
-  
+
   const hasRole = (role: RoleName | RoleName[]) => {
     if (!user.value) return false
     const roles = Array.isArray(role) ? role : [role]
@@ -167,13 +170,13 @@ export function useRole() {
   const checkPermission = (permission: Record<string, string[]>) => {
     if (!user.value) return false
     if (isAdmin.value) return true
-    
+
     const [resource, actions] = Object.entries(permission)[0]
-    
+
     if (resource === 'user' && isModerator.value) {
       return actions.some(action => ['list', 'ban'].includes(action))
     }
-    
+
     return false
   }
 
@@ -195,9 +198,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (to.path === '/login' || to.path === '/signup') {
     return
   }
-  
+
   const { user } = await useAuthSSR()
-  
+
   if (!user.value) {
     return navigateTo({
       path: '/login',

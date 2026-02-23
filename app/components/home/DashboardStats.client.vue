@@ -83,11 +83,11 @@ const estadosValues = estadosData.map(i => i.value)
 const totalEstados = estadosValues.reduce((a, b) => a + b, 0)
 
 const estadosCategories: Record<string, { name: string, color: string }> = {
-  'Pendiente': { name: 'Pendiente', color: '#3b82f6' },
-  'Proceso': { name: 'En Proceso', color: '#06b6d4' },
-  'Revisión': { name: 'Revisión', color: '#8b5cf6' },
-  'Completado': { name: 'Completado', color: '#10b981' },
-  'Cancelado': { name: 'Cancelado', color: '#ef4444' }
+  Pendiente: { name: 'Pendiente', color: '#3b82f6' },
+  Proceso: { name: 'En Proceso', color: '#06b6d4' },
+  Revisión: { name: 'Revisión', color: '#8b5cf6' },
+  Completado: { name: 'Completado', color: '#10b981' },
+  Cancelado: { name: 'Cancelado', color: '#ef4444' }
 }
 
 const formatCurrency = (value: number): string => {

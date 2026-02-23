@@ -35,15 +35,6 @@ export default defineNuxtConfig({
     }
   },
 
-  openFetch: {
-    clients: {
-      api: {
-        baseURL: '/api',
-        schema: './openapi.json'
-      }
-    }
-  },
-
   routeRules: {
     // Proxy para la API del backend (auth, users, roles)
     // Específicamente excluir _nuxt_icon del proxy
@@ -59,11 +50,11 @@ export default defineNuxtConfig({
       proxy: `${process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'}/api/roles/**`
     }
   },
-  compatibilityDate: '2025-12-11',
 
   future: {
     compatibilityVersion: 4
   },
+  compatibilityDate: '2025-12-11',
 
   eslint: {
     config: {
@@ -80,6 +71,15 @@ export default defineNuxtConfig({
     // Escanear componentes para incluir iconos usados en el bundle del cliente
     clientBundle: {
       scan: true
+    }
+  },
+
+  openFetch: {
+    clients: {
+      api: {
+        baseURL: '/api',
+        schema: './openapi.json'
+      }
     }
   }
 })
