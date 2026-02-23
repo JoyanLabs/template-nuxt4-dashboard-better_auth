@@ -1,5 +1,5 @@
 import { useAuthFetch } from '~/composables/useAuthFetch'
-import { authClient } from '~/lib/auth-client'
+import { authClient } from '~/utils/auth-client'
 
 interface User {
   id: string
@@ -109,6 +109,48 @@ export function useAuth() {
   }
 
   /**
+   * Solicita el envío de un correo para recuperación de contraseña
+   */
+  async function requestPasswordReset(email: string, redirectTo: string) {
+    try {
+      const result = await authClient.requestPasswordReset({
+        email,
+        redirectTo
+      })
+
+      if (result.error) {
+        return { success: false, error: result.error.message || 'Error al enviar el correo' }
+      }
+
+      return { success: true }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Error al enviar el correo'
+      return { success: false, error: message }
+    }
+  }
+
+  /**
+   * Resetea la contraseña usando un token
+   */
+  async function resetPassword(password: string, token: string) {
+    try {
+      const result = await authClient.resetPassword({
+        newPassword: password,
+        token
+      })
+
+      if (result.error) {
+        return { success: false, error: result.error.message || 'Error al resetear la contraseña' }
+      }
+
+      return { success: true }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Error al resetear la contraseña'
+      return { success: false, error: message }
+    }
+  }
+
+  /**
    * Verifica si el usuario está autenticado
    */
   const isAuthenticated = computed(() => !!user.value)
@@ -121,6 +163,8 @@ export function useAuth() {
     isAuthenticated,
     signIn,
     signUp,
-    signOut
+    signOut,
+    requestPasswordReset,
+    resetPassword
   }
 }

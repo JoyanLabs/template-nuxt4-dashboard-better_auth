@@ -1,3 +1,4 @@
+import { defineNuxtRouteMiddleware, navigateTo } from '#app'
 /**
  * Middleware de protección para rutas de gestión de usuarios
  *

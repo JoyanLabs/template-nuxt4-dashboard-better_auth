@@ -1,5 +1,5 @@
-import { authClient } from '~/lib/auth-client'
-import type { RoleName } from '~/lib/permissions'
+import { authClient } from '~/utils/auth-client'
+import type { RoleName } from '~/utils/permissions'
 
 /**
  * Composable para gestión de roles y permisos

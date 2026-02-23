@@ -1,5 +1,6 @@
+import { defineNuxtRouteMiddleware, navigateTo } from '#app'
 import { useAuthFetch } from '~/composables/useAuthFetch'
-import { authClient } from '~/lib/auth-client'
+import { authClient } from '~/utils/auth-client'
 
 /**
  * Middleware de autenticación usando Better Auth
