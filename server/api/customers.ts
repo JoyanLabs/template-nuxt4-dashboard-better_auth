@@ -1,3 +1,4 @@
+import { eventHandler } from 'h3'
 import type { User } from '~/types'
 
 const customers: User[] = [{

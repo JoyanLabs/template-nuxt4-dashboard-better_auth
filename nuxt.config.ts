@@ -9,8 +9,8 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/scripts',
     '@nuxt/test-utils',
-    '@nuxt/test-utils',
-    '@nuxtjs/i18n'
+    'nuxt-open-fetch',
+    'nuxt-charts'
   ],
 
   devtools: {
@@ -26,7 +26,21 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
-      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:3001',
+      openFetch: {
+        api: {
+          baseURL: process.env.NUXT_PUBLIC_OPEN_FETCH_API_BASE_URL || '/api'
+        }
+      }
+    }
+  },
+
+  openFetch: {
+    clients: {
+      api: {
+        baseURL: '/api',
+        schema: './openapi.json'
+      }
     }
   },
 
@@ -47,6 +61,10 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2025-12-11',
 
+  future: {
+    compatibilityVersion: 4
+  },
+
   eslint: {
     config: {
       stylistic: {
@@ -54,16 +72,6 @@ export default defineNuxtConfig({
         braceStyle: '1tbs'
       }
     }
-  },
-
-  i18n: {
-    locales: [
-      { code: 'es', language: 'es-ES', name: 'Español', file: 'es.json' },
-      { code: 'en', language: 'en-US', name: 'English', file: 'en.json' }
-    ],
-    defaultLocale: 'es',
-    langDir: 'locales',
-    strategy: 'no_prefix'
   },
 
   icon: {

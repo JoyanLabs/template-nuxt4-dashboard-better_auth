@@ -1,5 +1,10 @@
 import { z } from 'zod'
-import type { CreateUserDTO, SetPasswordDTO, UpdateUserDTO } from '~/composables/useUsersAPI'
+import type { ApiRequestBody } from '#open-fetch'
+
+// Tipos derivados de nuxt-open-fetch
+export type CreateUserDTO = ApiRequestBody<'UserController_createUser'>
+export type UpdateUserDTO = ApiRequestBody<'UserController_updateUser'>
+export type SetPasswordDTO = ApiRequestBody<'UserController_setPassword'>
 
 /**
  * Esquema de validación para la creación de usuarios

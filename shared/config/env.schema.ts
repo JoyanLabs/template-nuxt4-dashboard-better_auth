@@ -3,13 +3,17 @@ import { z } from 'zod'
 /**
  * Esquema de validación para las variables de entorno del Frontend
  * Define todas las variables requeridas y sus formatos
+ * Usando Zod 4 API
  */
 export const envSchema = z.object({
   // Configuración del Sitio
-  NUXT_PUBLIC_SITE_URL: z.preprocess(val => val === '' ? undefined : val, z.string().url().optional().default('http://localhost:3000')),
+  NUXT_PUBLIC_SITE_URL: z.preprocess(
+    val => val === '' ? undefined : val,
+    z.url({ error: 'URL inválida' }).optional().default('http://localhost:3000')
+  ),
 
   // API
-  NUXT_PUBLIC_API_BASE_URL: z.string().url().default('http://localhost:3001'),
+  NUXT_PUBLIC_API_BASE_URL: z.url({ error: 'API Base URL inválida' }).default('http://localhost:3001'),
 
   // Entorno
   NODE_ENV: z

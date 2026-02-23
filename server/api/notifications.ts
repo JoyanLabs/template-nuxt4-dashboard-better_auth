@@ -1,3 +1,4 @@
+import { eventHandler } from 'h3'
 import { sub } from 'date-fns'
 
 const notifications = [{

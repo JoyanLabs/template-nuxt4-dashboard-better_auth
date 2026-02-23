@@ -16,37 +16,40 @@
     "lint": "eslint .",
     "typecheck": "nuxt typecheck",
     "docker:build": "docker build -t spp-frontend:latest --target production .",
-    "docker:prod": "docker compose up"
+    "docker:prod": "docker compose up",
+    "api:update": "curl -s http://localhost:3001/api-json > openapi.json && echo '✅ OpenAPI schema actualizado. Reinicia el servidor para aplicar cambios.'"
   },
   "dependencies": {
-    "@iconify-json/simple-icons": "^1.2.67",
+    "@iconify-json/simple-icons": "^1.2.68",
     "@nuxt/hints": "1.0.0-alpha.5",
     "@nuxt/image": "2.0.0",
     "@nuxt/scripts": "0.13.2",
     "@nuxt/test-utils": "3.23.0",
-    "@nuxt/ui": "^4.3.0",
+    "@nuxt/ui": "^4.4.0",
     "@nuxtjs/i18n": "^10.2.1",
     "@unhead/vue": "^2.1.2",
     "@unovis/ts": "^1.6.2",
     "@unovis/vue": "^1.6.2",
     "@vueuse/nuxt": "^14.1.0",
-    "better-auth": "^1.4.15",
+    "better-auth": "^1.4.17",
     "date-fns": "^4.1.0",
-    "nuxt": "^4.2.2",
+    "nuxt": "^4.3.1",
+    "nuxt-charts": "^2.1.1",
+    "nuxt-open-fetch": "^0.13.8",
     "tailwindcss": "^4.1.18",
-    "zod": "^4.3.5"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.3.1",
     "@commitlint/config-conventional": "^20.3.1",
-    "@iconify-json/lucide": "^1.2.86",
-    "@nuxt/eslint": "^1.12.1",
-    "baseline-browser-mapping": "^2.9.15",
+    "@iconify-json/lucide": "^1.2.87",
+    "@nuxt/eslint": "^1.13.0",
+    "baseline-browser-mapping": "^2.9.18",
     "eslint": "^9.39.2",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
-    "typescript": "^5.9.3",
-    "vue-tsc": "^3.2.2"
+    "typescript": "5.7.3",
+    "vue-tsc": "2.2.12"
   },
   "packageManager": "pnpm@10.27.0"
 }
