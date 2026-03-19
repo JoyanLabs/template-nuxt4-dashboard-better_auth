@@ -60,6 +60,7 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 | Preguntas generales sobre el template | `template-frontend` |
 | Regenerar tablas Auto-invoke de AGENTS.md | `skill-sync` |
 | Trabajando con autenticación o permisos | `better-auth` |
+| Implementando SSR, middleware o protección de rutas | `better-auth` |
 | Auditar o revisar skills existentes | `skill-auditor` |
 | Validar skills contra código real | `skill-auditor` |
 
@@ -109,6 +110,36 @@ pnpm preview                # Previsualiza build productivo
 # Calidad de Código
 pnpm lint                   # Ejecuta ESLint
 pnpm typecheck              # Verifica tipos con vue-tsc
+```
+
+---
+
+## Checklist Antes de Implementar APIs
+
+Antes de crear nuevos composables o páginas que consuman APIs del backend, verifica:
+
+### 1. Backend Disponible
+- [ ] Backend corriendo en `http://localhost:3001`
+- [ ] Health check responde: `curl http://localhost:3001/health`
+- [ ] OpenAPI spec disponible: `curl http://localhost:3001/api-json`
+
+### 2. Middlewares
+- [ ] Todas las páginas están protegidas automáticamente por `auth.global` (no requiere configuración)
+- [ ] Para protección adicional por rol, verificar middlewares disponibles: `ls app/middleware/`
+
+### 3. Proxies en nuxt.config.ts
+- [ ] Verificar que el endpoint tenga proxy en `routeRules`
+- [ ] Si falta, agregar: `'/api/xxxx/**': { proxy: 'http://localhost:3001/api/xxxx/**' }`
+- [ ] Reiniciar servidor después de cambiar proxies
+
+### 4. Composables Existentes
+- [ ] Revisar si ya existe un composable similar en `app/composables/`
+- [ ] Usar skill `better-auth` para autenticación (NO reemplazar con otra librería)
+
+### 5. Endpoints del Backend
+```bash
+# Listar todos los endpoints disponibles
+curl -s http://localhost:3001/api-json | jq '.paths | keys'
 ```
 
 ---
