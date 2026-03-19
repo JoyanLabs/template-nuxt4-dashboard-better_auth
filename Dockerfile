@@ -49,7 +49,6 @@ COPY eslint.config.mjs .
 COPY app app
 COPY server server
 COPY public public
-COPY i18n i18n
 COPY shared shared
 
 RUN pnpm run build && \

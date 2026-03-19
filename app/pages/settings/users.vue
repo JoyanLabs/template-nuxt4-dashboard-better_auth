@@ -34,16 +34,16 @@ const users = computed<Member[]>(() => {
   if (!usersList) return []
 
   return usersList.map(user => ({
-    id: user.id,
-    name: user.name,
-    username: user.email?.split('@')[0] || user.name,
-    email: user.email,
-    role: user.role,
-    banned: user.banned,
-    createdAt: user.createdAt,
+    id: user.id ?? '',
+    name: user.name ?? '',
+    username: (user.email?.split('@')[0] || user.name) ?? '',
+    email: user.email ?? '',
+    role: (user.role as Member['role']) ?? 'user',
+    banned: user.banned ?? false,
+    createdAt: user.createdAt ?? '',
     avatar: {
-      src: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=random`,
-      alt: user.name
+      src: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name ?? 'U')}&background=random`,
+      alt: user.name ?? ''
     }
   }))
 })

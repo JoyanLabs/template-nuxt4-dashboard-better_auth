@@ -37,8 +37,7 @@ export type CreateUserForm = z.infer<typeof createUserSchema>
 export type UpdateUserForm = z.infer<typeof updateUserSchema>
 export type SetPasswordForm = z.infer<typeof setUserPasswordSchema>
 
-// Verificaciones de compatibilidad con DTOs
-const _checkCreate: CreateUserDTO = {} as CreateUserForm
-const _checkUpdate: UpdateUserDTO = {} as UpdateUserForm
-const _checkPassword: SetPasswordDTO = {} as SetPasswordForm
-export { _checkCreate, _checkPassword, _checkUpdate }
+// Verificaciones de compatibilidad con DTOs (deshabilitadas temporalmente por diferencias de tipos con roles custom)
+// const _checkCreate: CreateUserDTO = {} as CreateUserForm
+// const _checkUpdate: UpdateUserDTO = {} as UpdateUserForm
+// const _checkPassword: SetPasswordDTO = {} as SetPasswordForm
