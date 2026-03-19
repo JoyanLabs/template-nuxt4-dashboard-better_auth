@@ -41,7 +41,7 @@ const handleRoleChange = async (user: Member, newRole: RoleName) => {
   if (!isAdmin.value) return
 
   try {
-    await updateUserRole(user.id as string, { role: newRole })
+    await updateUserRole(user.id as string, { role: newRole as 'user' | 'admin' })
     toast.add({
       title: 'Rol actualizado',
       description: `${user.name} ahora es ${newRole}`,

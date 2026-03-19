@@ -45,7 +45,7 @@ const resetForm = () => {
 const onSubmit = async (event: FormSubmitEvent<CreateUserForm>) => {
   try {
     isSubmitting.value = true
-    await createUser(event.data)
+    await createUser(event.data as Omit<typeof event.data, 'role'> & { role: 'user' | 'admin' })
     toast.add({
       title: 'Usuario creado',
       description: `El usuario ${event.data.name} ha sido creado correctamente.`,

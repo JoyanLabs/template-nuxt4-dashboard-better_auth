@@ -72,7 +72,7 @@ const columns: TableColumn<Cliente>[] = [
         inactivo: 'Inactivo',
         prospecto: 'Prospecto'
       }
-      return h(UBadge, { color: colors[row.original.estado], variant: 'subtle' }, () => labels[row.original.estado])
+      return h('UBadge', { color: colors[row.original.estado], variant: 'subtle' }, () => labels[row.original.estado])
     }
   },
   {
